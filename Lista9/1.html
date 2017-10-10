@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Lista 9: Ćwiczenie 1</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+  <script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+  <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+  <style>
+    h1 {
+      text-align: center
+    }
+
+    nav {
+      width: auto;
+      margin: auto
+    }
+
+    #hanoi {
+      height: 500px;
+      width: 800px;
+      margin: auto;
+      border: 1px solid grey;
+    }
+
+    .cell {
+      height: 500px;
+      width: 330px;
+      border: 1px solid green;
+      vertical-align: bottom;
+      display: table-cell
+    }
+
+    .k {
+      background: yellow;
+      border: 1px solid grey;
+      height: 10%;
+      margin: auto;
+      border-radius: 25px
+    }
+
+    * {
+      font-family: Sans;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1>Hanoi</h1>
+
+  <center>Move the stack to the right cell</center><br>
+
+  <div id='hanoi'>
+    <div id='a' class="cell"></div>
+    <div id='b' class="cell"></div>
+    <div id='c' class="cell"></div>
+  </div>
+
+  <script>
+    var current;
+
+    function acceptElement(element) {
+      let smallest = $(this).children(":first").attr("id");
+      // console.log(smallest);
+      // console.log(element[0].id);
+      if (smallest === undefined || smallest > element[0].id) {
+        console.log(true);
+        return true;
+      } else {
+        return false;
+      }
+    }
+
+    function dropElement(event, ui) {
+      console.log(this);
+      $(this).prepend(ui.draggable);
+    }
+
+    $(init);
+
+    function init() {
+      for (let i = 2; i < 10; i++) {
+        $("#a").append("<div id='" + i + "' class='k' style='width:" + i + "0%'></div>");
+      }
+      $('div.cell').droppable({
+        activeClass: "active",
+        hoverClass: "hover",
+        accept: acceptElement,
+        drop: dropElement
+      });
+      $('div.k').draggable({
+        appendTo: "#hanoi",
+        helper: "clone"
+      });
+    }
+
+    $('.k').click(
+      function() {
+        $(".cur").removeClass('cur');
+        current = this;
+        $(this).addClass('cur');
+        return false;
+
+      }
+    );
+
+
+    $("#hanoi >div").click(
+
+      function() {
+        var to = $(this).children(":first").attr("id");
+        var from = $(current).attr("id")
+
+        if ($(current).is(":first-child"))
+          if (to == undefined || to > from)
+            $(this).prepend(current);
+      }
+    );
+  </script>
+
+</body>
+
+</html>

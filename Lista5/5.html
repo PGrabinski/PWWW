@@ -1,0 +1,123 @@
+<html>
+
+<head>
+	<meta charset='utf-8' />
+	<title>Lista 5: Ćwiczenie 4</title>
+	<style>
+		body {
+			background-color: #f5f5f5;
+			color: black;
+		}
+
+		#zegar {
+			margin: auto;
+			display: block;
+			border: 1px solid grey;
+		}
+
+		#godzina {
+			text-align: center;
+			margin: 10px;
+			font-size: 20px;
+		}
+	</style>
+</head>
+
+<body>
+
+	<canvas id="zegar" height="600" width="600">
+		Your browser does not support the canvas tag.
+	</canvas>
+
+	<div id="godzina"></div>
+
+</body>
+
+
+
+<script>
+	let clock = {
+		'x': Math.random() * 450 + 50,
+		'y': Math.random() * 450 + 50,
+		'vx': Math.random() * 2 -1,
+		'vy': Math.random() * 2 -1
+	}
+	rysujZegar(); // narysuj zegar
+	setInterval(moveClock, 10); // rysuj zegar co sekundę (1000ms)
+
+	function moveClock() {
+		clock.x+=clock.vx;
+		clock.y+=clock.vy;
+		if (clock.x > 564 || clock.x < 36) clock.vx *= -1;
+		if (clock.y > 564 || clock.y < 36) clock.vy *= -1;
+		rysujZegar();
+	}
+	// funkcja do rysowania kresek
+	function kreska(ctx, r1, r2, alpha) {
+		alpha *= Math.PI * 2;
+		ctx.beginPath();
+		ctx.moveTo(clock.x + r1 * Math.sin(alpha), clock.y - r1 * Math.cos(alpha));
+		ctx.lineTo(clock.x + r2 * Math.sin(alpha), clock.y - r2 * Math.cos(alpha));
+		ctx.stroke();
+	}
+
+	// Rysuje zegar wskazujący bieżącą godzinę
+	function rysujZegar() {
+		var c = document.getElementById("zegar");
+		var ctx = c.getContext("2d");
+
+		// Zamalowanie tła na biało (wymazuje poprzedni rysunek zegara)
+		ctx.fillStyle = "white";
+		ctx.fillRect(0, 0, 600, 600);
+
+
+		// tarcza zegara
+		ctx.strokeStyle = "black"; // kolor linii
+		ctx.lineWidth = 3; // szerokość linii
+
+		ctx.beginPath();
+		// rysujemy okrąg
+		ctx.arc(clock.x, // x środka okręgu
+			clock.y, // y środka okręgu
+			36, // promień łuku
+			0, // kąt początkowy
+			2 * Math.PI // kąt końcowy
+		);
+		ctx.stroke(); // narysuj
+
+
+		// Znaczki godzinowe o szerokości 10
+		ctx.lineWidth = 4;
+		for (i = 0; i < 12; i++)
+			kreska(ctx, 28, 38, i / 12);
+
+		// Znaczki minutowe o szerokości 3
+		ctx.lineWidth = 0.5;
+		for (i = 0; i < 60; i++)
+			kreska(ctx, 26, 38, i / 60);
+
+
+		var data = new Date(); // Pobieramy datę systemową
+		var sekundy = data.getSeconds(); // Wyciągamy z niej sekundy
+		var minuty = data.getMinutes(); // minuty
+		var godziny = data.getHours(); // i godziny
+
+		//Wskazówka godzinowa
+		ctx.lineWidth = 5;
+		kreska(ctx, -5, 30, godziny / 12 + minuty / 60 / 12);
+
+		//Wskazówka minutowa
+		kreska(ctx, -10, 40, minuty / 60 + sekundy / 60 / 60);
+
+		//Wskazówka sekundowa
+		ctx.lineWidth = 1;
+		ctx.strokeStyle = "grey";
+		kreska(ctx, -15, 45, sekundy / 60);
+
+		// Wyświetl datę i czas pod zegarem
+		document.getElementById("godzina").innerHTML = data;
+
+	}
+</script>
+
+</html>

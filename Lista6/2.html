@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Lista 6: Ćwiczenie 2</title>
+  <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+  <style>
+    * {
+      background-color: #f5f5f5;
+      color: black;
+    }
+
+    table {
+      position: absolute;
+      left: 100px;
+      border: 1px solid plum;
+      padding: 5px;
+      background-color: lightgreen;
+    }
+
+    tr {
+      background-color: lightgreen;
+    }
+
+    td,
+    th {
+      border: 1px solid plum;
+      border-radius: 2px;
+      padding: 5px 15px;
+      margin: 5px;
+      background: palegoldenrod;
+      font-family: Arial;
+    }
+
+    .highlighted {
+      background-color: coral;
+      font-weight: bold;
+    }
+  </style>
+</head>
+
+<body>
+
+  <button id="AddEmptyRow">Add empty row</button>
+  <button id="AddEmptyCol">Add empty Column</button>
+  <button id="AddCellLastRow">Add cell to the last row</button>
+  <button id="CoppyLastRow">Coppy last row</button>
+  <button id="RemoveFirstRow">Remove first row</button>
+  <hr>
+  <button id="RemoveLastRow">Remove last row</button>
+  <button id="RemoveFirstCol">Remove first column</button>
+  <button id="RemoveLastCol">Remove last column</button>
+  <button id="ToggleClickRemove">Toggle cell remove by clicking</button>
+  <button id="ToggleStyleMouseover">Toggle cell style on mouseover</button>
+  <hr>
+  <table>
+    <tr>
+      <th>Column 1</th>
+      <th>Column 2</th>
+      <th>Column 3</th>
+    </tr>
+    <tr>
+      <td>A1</td>
+      <td>A2</td>
+      <td>A3</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>2</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>2</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>2</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>2</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>2</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>2</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>2</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>2</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>2</td>
+      <td>3</td>
+    </tr>
+  </table>
+  <script type="text/javascript">
+    $(document).ready(() => {
+      toggleHoverStyling = false;
+      toggleClickCellRemove = false;
+
+      //By clicking the corresponding button, we add new row
+      $('#AddEmptyRow').on('click', () => {
+        let elFirstRow = $('table').find('tr:first')[0].childNodes;
+        let numberOfCols = 0;
+        for (let item of elFirstRow) {
+          if (item.localName === 'td' || item.localName === 'th') numberOfCols++;
+        }
+        let newrow = '<tr>';
+        for (let i = 0; i < numberOfCols; i++) {
+          newrow += '<td></td>';
+        }
+        newrow += '</tr>'
+        $('table').append(newrow);
+      })
+
+      //By clicking the corresponding button, we add a new column
+      $('#AddEmptyCol').on('click', () => {
+        $('table').find('tr').find('td:last').after('<td></td>');
+        $('table').find('tr').find('th:last').after('<th></th>');
+      });
+
+      //By clicking the corresponding button, we add a cell to the last row
+      $('#AddCellLastRow').on('click', () => {
+        $('table').find('tr:last').append('<td></td>');
+      })
+
+      //By clicking the corresponding button, we append the last row once more
+      $('#CoppyLastRow').on('click', () => {
+        let lastRow = $('table').find('tr:last').clone();
+        $('table').append(lastRow);
+      })
+
+      //By clicking the corresponding button, we delete the first row
+      $('#RemoveFirstRow').on('click', () => {
+        $('table').find('tr')[1].remove();
+      })
+
+      //By clicking the corresponding button, we delete the last row
+      $('#RemoveLastRow').on('click', () => {
+        $('table').find('tr:last').remove();
+      })
+
+      //By clicking the corresponding button, we delete the first column
+      $('#RemoveFirstCol').on('click', () => {
+        let tableRows = $('table').find('tr').find('td:eq(0)');
+        for(let item of tableRows) {
+          item.remove();
+        }
+        $('table').find('tr').find('th:eq(0)').remove();
+      })
+
+      //By clicking the corresponding button, we delete the last column
+      $('#RemoveLastCol').on('click', () => {
+        let tableRows = $('table').find('tr').find('td:last');
+        for(let item of tableRows) {
+          item.remove();
+        }
+        $('table').find('tr').find('th:last').remove();
+      })
+
+      //By clicking the corresponding button, we enable click cell removal
+      $('#ToggleClickRemove').on('click', () => {
+        toggleClickCellRemove = !toggleClickCellRemove;
+        $('td').on('click', (e) => {
+          $(e.currentTarget).fadeOut();
+        });
+      });
+
+      //By clicking the corresponding button, we enable hover class change of a cell
+      $('#ToggleStyleMouseover').on('click',
+        () => {
+          toggleHoverStyling = !toggleHoverStyling;
+
+          //This is much better approach, but the exercise was explicit about mouseover+mouseout
+          //   $('td').hover((e) => {
+          //     if (toggleHoverStyling) {
+          //       $(e.currentTarget).toggleClass('highlighted');
+          //     }
+          // });
+
+          $('td').on('mouseover', (e) => {
+            if (toggleHoverStyling) {
+              $(e.currentTarget).addClass('highlighted');
+            }
+          });
+          $('td').on('mouseout', (e) => {
+            if (toggleHoverStyling) {
+              $(e.currentTarget).removeClass('highlighted');
+            }
+          })
+
+
+        });
+    })
+  </script>
+</body>
+
+</html>

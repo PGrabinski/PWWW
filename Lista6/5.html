@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Lista N: Ćwiczenie K</title>
+  <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+  <style>
+    * {
+      background-color: #f5f5f5;
+      color: black;
+      position: relative;
+    }
+
+    #svgpro {
+      fill: none;
+      stroke-width: 2;
+    }
+  </style>
+</head>
+
+<body>
+  <svg viewBox="-34 -12 68 33" width="500" height="500">
+     <defs>
+        <clipPath id="interlace">
+           <path d="M -11,-11 h 22 v 22 h -22 z M 11,-1.5 a 10.5,10.5 0 0,0 0,21 v -3 a 7.5,7.5 0 1,1 0,-15 M -11,1.5 a 7.5,7.5 0 1,1 0,15 v 3 a 10.5,10.5 0 0,0 0,-21 z" clip-rule="evenodd"/>
+        </clipPath>
+        <clipPath id="interlace_Firefox">
+           <path d="M 0,0 l -12,12 h 12 z"/>
+        </clipPath>
+        <g id="ring">
+           <circle r="9"  clip-path="url(#interlace)"/>
+           <circle r="9"  clip-path="url(#interlace_Firefox)"/>
+           <path d="M 0,-9 a 9,9 0 0,1 9,9" transform="rotate(45)"/>
+        </g>
+     </defs>
+       <g id="svgpro">
+        <g id="ring1" stroke="#0085c7" transform="translate(-22,0)">
+           <use xlink:href="#ring"/>
+           <path d="M 0,-9 a 9,9 0 0,0 0,18"/>
+        </g>
+        <use id="ring2" xlink:href="#ring" stroke="black"/>
+        <g id="ring3" stroke="#df0024" transform="translate(22,0)">
+           <use xlink:href="#ring"/>
+           <path d="M 0,-9 a 9,9 0 0,1 0,18"/>
+        </g>
+        <use id="ring4" xlink:href="#ring" stroke="#f4c300" transform="translate(-11,9) rotate(180)"/>
+        <use id="ring5" xlink:href="#ring" stroke="#009f3d" transform="translate(11,9) rotate(180)"/>
+     </g>
+  </svg>
+  <script type="text/javascript">
+    $(document).ready(() => {
+      $('#ring1').on('click', () => {
+        $('#ring1').fadeOut(2000, () => {
+          $('#ring1').fadeIn(2000);
+        })
+      });
+      $('#ring2').on('click', () => {
+        $('#ring1').fadeOut(2000, () => {
+          $('#ring1').fadeIn(2000);
+        });
+        $('#ring5').fadeOut(2000, () => {
+          $('#ring5').fadeIn(2000);
+        });
+        $('#ring3').fadeOut(2000, () => {
+          $('#ring3').fadeIn(2000);
+        });
+        $('#ring4').fadeOut(2000, () => {
+          $('#ring4').fadeIn(2000);
+        });
+      });
+      $('#ring4').on('click', () => {
+        let box = $('#ring4');
+        box.animate({
+          foo: 50
+        },
+        {
+          step: function(foo){
+            $(this).attr('x',foo);
+          },
+          duration: 2000
+        });
+        setTimeout(() => {
+          box.animate({
+            foo: 0
+          },
+          {
+            step: function(foo){
+              $(this).attr('x',foo);
+            },
+            duration: 2000
+          });
+        }, 2000);
+      });
+      $('#ring5').on('click', () => {
+        let box = $('#ring5');
+        box.animate({
+          foo: -40
+        },
+        {
+          step: function(foo){
+            $(this).attr('x',foo);
+          },
+          duration: 2000
+        });
+        setTimeout(() => {
+          box.animate({
+            foo: 0
+          },
+          {
+            step: function(foo){
+              $(this).attr('x',foo);
+            },
+            duration: 2000
+          });
+        }, 2000);
+      });
+    });
+    $('#ring3').on('click', () => {
+      let box5 = $('#ring5');
+      box5.animate({
+        foox: 22
+      },
+      {
+        step: function(foox){
+          $(this).attr('x',foox);
+        },
+        duration: 2000
+      });
+      let box4 = $('#ring4');
+      box4.animate({
+        foox: -22
+      },
+      {
+        step: function(foox){
+          $(this).attr('x',foox);
+        },
+        duration: 2000
+      });
+  });
+  </script>
+</body>
+
+</html>

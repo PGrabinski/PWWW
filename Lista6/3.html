@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Lista 6: Ćwiczenie 3</title>
+  <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+  <style>
+    * {
+      background-color: #f5f5f5;
+      color: black;
+    }
+
+    div {
+      position: absolute;
+    }
+
+    #ramka {
+      position: absolute;
+      left: 50px;
+      top: 50px;
+      width: 800px;
+      height: 400px;
+      border: 1px solid coral;
+    }
+
+    h1 {
+      text-align: center;
+      font-weight: bold;
+      font-family: Arial;
+    }
+
+  </style>
+</head>
+
+<body>
+  <div id="ramka">
+  </div>
+  <script type="text/javascript">
+    $(document).ready(() => {
+      let score = 0;
+      let colors =['coral','violet','palegoldenrod','plum','lightgreen'];
+      let timers = [];
+      for (let i=0; i<5; i++) {
+        addBlock(i);
+      }
+      setTimeout(()=>{
+        $('#ramka').remove();
+        $('body').append('<h1>Your score: '+score+'</h1>');
+      },20000);
+
+      function disappearAfter5(id){
+        timers[id] = setTimeout(() => {
+          $('#'+id+'').remove();
+          addBlock(id);
+        }, 5000);
+      }
+
+      function addBlock(i) {
+      $('#ramka').append(
+        '<div id="'+i+'" style="background-color:'
+        +colors[Math.floor(Math.random()*5)]
+        +'; left:'+Math.floor(Math.random()*750)
+        +'px; top:'+Math.floor(Math.random()*350)
+        +'px; width:'+Math.floor(Math.random()*20+30)
+        +'px; height:'+Math.floor(Math.random()*20+30)
+        +'px;"> </div>');
+        $('#'+i).on('click',() => {
+          score++;
+          clearTimeout(timers[i]);
+          $('#'+i).remove();
+          addBlock(i);
+        });
+        disappearAfter5(i);
+      }
+    }
+    );
+  </script>
+</body>
+
+</html>

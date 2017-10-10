@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pl">
+  <head>
+    <meta charset="utf-8">
+    <title>Lista 2: Ćwiczenie 10</title>
+    <style media="screen">
+      img {
+        width: 300px;
+      }
+    </style>
+  </head>
+  <body>
+    <script type="text/javascript">
+    function getId() {
+      let temp = parseInt(document.getElementById('obrazek').src.slice(-5).slice(0,1));
+      if (temp !== 0){
+        return temp;
+      } else {
+        return parseInt(document.getElementById('obrazek').src.slice(-6).slice(0,2));
+      }
+    }
+      function getNextImg() {
+        let id = getId();
+        if (id<10){
+          document.getElementById('obrazek').src='images/a'+eval(id+1)+'.jpg';
+          document.getElementById('obrazek').alt=eval(id+1);
+        } else {
+          document.getElementById('obrazek').src='images/a1.jpg';
+          document.getElementById('obrazek').alt='1';
+        }
+      };
+      function getPreviousImg() {
+        let id = getId();
+        if (id>1){
+          document.getElementById('obrazek').src='images/a'+eval(id-1)+'.jpg';
+          document.getElementById('obrazek').alt=eval(id-1);
+        } else {
+          document.getElementById('obrazek').src='images/a10.jpg';
+          document.getElementById('obrazek').alt='10';
+        }
+
+      }
+    </script>
+    <button onclick="getPreviousImg()">Poprzedni</button>
+    <button onclick="getNextImg()">Następny</button>
+    <br>
+    <img src="images/a1.jpg" alt="Obrazek" id="obrazek">
+  </body>
+</html>

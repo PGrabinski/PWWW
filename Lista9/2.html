@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Lista 9: Ćwiczenie 2</title>
+  <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+  <script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+  <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+  <style>
+    .gameField {
+      height: 50px;
+      width: 50px;
+      border: 1px solid grey;
+      text-align: center;
+      font-size: 35px;
+    }
+
+    .gameField:hover {
+      background: #ddd
+    }
+
+    .emptyField {
+      background-color: white;
+      border: none;
+    }
+
+    table {
+      margin: auto;
+      border-collapse: collapse;
+    }
+
+    h1 {
+      text-align: center
+    }
+  </style>
+</head>
+
+<body>
+  <table id="theGame">
+  </table>
+  <h1 id="info">Remaining: 32</h1>
+  <script>
+    let score = 32;
+
+    function accept(field) {  if (field[0].innerText === 'O') {
+        if (($('#' + this.id).parent().attr('id') === $('#' + field[0].id).parent().attr('id') && Math.abs(field[0].id - this.id) === 2) || Math.abs(field[0].id - this.id) === 14) {
+          if (this.innerText === '') {
+            return true;
+          }
+        }
+      } else {
+        return false;
+      }
+    }
+
+    function drop(event, ui) {
+      let sourceId = ui.draggable[0].id;
+      let targetId = this.id;
+      let middleId = (parseInt(sourceId) + parseInt(targetId))/2;
+      $('#'+sourceId).empty();
+      $('#'+middleId).empty();
+      $('#'+targetId)[0].innerText = 'O';
+      score--;
+      $('#info')[0].innerText = 'Remaining: ' + score;
+      $(".active").removeClass("active");
+    }
+
+    function setUp() {
+      let shortRowsNumbers = [1, 2, 6, 7];
+      for (let i = 1; i <= 7; i++) {
+        let newRow = '';
+        newRow += '<tr id="row' + i + '">';
+        for (let j = 1; j <= 7; j++) {
+          if (shortRowsNumbers.indexOf(i) !== -1 && shortRowsNumbers.indexOf(j) !== -1) {
+            newRow += '<td id="' + ((i-1) *7 + j) + '" class="emptyField"></td>';
+          } else {
+            if (i == 4 && j == 4) {
+              newRow += '<td id="' + ((i-1) *7 + j) + '" class="gameField"> </td>';
+            } else {
+              newRow += '<td id="' + ((i-1) *7 + j) + '" class="gameField">O</td>';
+            }
+          }
+        }
+        newRow += '</tr>';
+        $('#theGame').append(newRow);
+      }
+
+    }
+
+    $(() => {
+      setUp();
+      $('td.gameField').draggable({
+        appendTo: "table",
+        helper: "clone",
+      });
+      $('td.gameField').droppable({
+        activeClass: "active",
+        hoverClass: "hover",
+        accept: accept,
+        drop: drop
+      });
+    });
+
+  </script>
+
+</body>
+
+</html>

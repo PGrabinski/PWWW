@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Lista 2: Ćwiczenie 4</title>
+  <style>
+    .A {
+      font-family: Arial;
+      font-weight: bold;
+    }
+
+    .B {
+      font-family: monospace;
+      font-style: italic;
+    }
+    table {
+      margin-left: 20px;
+      margin-top: 20px;
+    }
+    td, th {
+      padding: 5px;
+      border: 1px solid plum;
+    }
+    table.A tr td {
+      background-color: coral;
+    }
+    table.A tr th {
+      background-color: lightyellow;
+    }
+
+    table.B tr td {
+      background-color: palegoldenrod;
+    }
+    table.B tr th {
+      background-color: palevioletred;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Możliwe zastosowanie colspan i rowspan</h1>
+
+<table class="A">
+  <tr>
+    <th>Nazwa:</th>
+    <th>Cena:</th>
+  </tr>
+  <tr>
+    <td>Monitor</td>
+    <td>300</td>
+  </tr>
+  <tr>
+    <td>Myszka</td>
+    <td>50</td>
+  </tr>
+  <tr>
+    <td colspan="2">Suma: 400</td>
+  </tr>
+</table>
+<table class="B">
+  <tr>
+    <th>Miesiąc:</th>
+    <th>Dostępność:</th>
+  </tr>
+  <tr>
+    <td>Styczeń</td>
+    <td rowspan="4">Wyprzedane</td>
+  </tr>
+  <tr>
+    <td>Luty</td>
+  </tr>
+  <tr>
+    <td>Marzec</td>
+  </tr>
+  <tr>
+    <td>Kwiecieć</td>
+  </tr>
+  <tr>
+    <td>Maj</td>
+    <td>5 sztuk</td>
+  </tr>
+</table>
+<hr>
+<table class="A">
+  <tr>
+    <th style="colspan:3">a b c d</th>
+    <th>a</th>
+    <th>a</th>
+  </tr>
+  <tr>
+    <td>b</td>
+    <td>b</td>
+    <td>b</td>
+  </tr>
+  <tr>
+    <td>c</td>
+    <td>c</td>
+    <td>c</td>
+  </tr>
+  <tr>
+    <td>d</td>
+    <td>d</td>
+    <td>d</td>
+  </tr>
+</table>
+
+
+<table class="B">
+  <tr>
+    <th>e f g h</th>
+    <th>e</th>
+    <th>e</th>
+  </tr>
+  <tr>
+    <td>f</td>
+    <td>f</td>
+    <td>f</td>
+  </tr>
+  <tr>
+    <td>g</td>
+    <td>g</td>
+    <td>g</td>
+  </tr>
+  <tr>
+    <td>h</td>
+    <td>h</td>
+    <td>h</td>
+  </tr>
+</table>
+</body>
+</html>
