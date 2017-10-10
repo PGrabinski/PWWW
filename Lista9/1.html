@@ -19,14 +19,14 @@
 
     #hanoi {
       height: 500px;
-      width: 800px;
+      width: 900px;
       margin: auto;
       border: 1px solid grey;
     }
 
     .cell {
       height: 500px;
-      width: 330px;
+      width: 300px;
       border: 1px solid green;
       vertical-align: bottom;
       display: table-cell
@@ -63,10 +63,7 @@
 
     function acceptElement(element) {
       let smallest = $(this).children(":first").attr("id");
-      // console.log(smallest);
-      // console.log(element[0].id);
       if (smallest === undefined || smallest > element[0].id) {
-        console.log(true);
         return true;
       } else {
         return false;
@@ -74,7 +71,6 @@
     }
 
     function dropElement(event, ui) {
-      console.log(this);
       $(this).prepend(ui.draggable);
     }
 
@@ -82,7 +78,7 @@
 
     function init() {
       for (let i = 2; i < 10; i++) {
-        $("#a").append("<div id='" + i + "' class='k' style='width:" + i + "0%'></div>");
+        $("#a").append("<div id='" + i + "' class='k' style='width:" + (i*30) + "px'></div>");
       }
       $('div.cell').droppable({
         activeClass: "active",
@@ -92,32 +88,16 @@
       });
       $('div.k').draggable({
         appendTo: "#hanoi",
-        helper: "clone"
+        helper: "clone",
+        start: function() {
+          $(this).hide();
+        },
+        stop: function() {
+          $(this).show();
+        }
       });
     }
 
-    $('.k').click(
-      function() {
-        $(".cur").removeClass('cur');
-        current = this;
-        $(this).addClass('cur');
-        return false;
-
-      }
-    );
-
-
-    $("#hanoi >div").click(
-
-      function() {
-        var to = $(this).children(":first").attr("id");
-        var from = $(current).attr("id")
-
-        if ($(current).is(":first-child"))
-          if (to == undefined || to > from)
-            $(this).prepend(current);
-      }
-    );
   </script>
 
 </body>
