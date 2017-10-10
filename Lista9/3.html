@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Lista 9: Ćwiczenie 3</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+  <script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+  <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+  <style>
+    h1 {
+      text-align: center
+    }
+
+    * {
+      font-family: Sans;
+    }
+    
+    .cell {
+		width: 800px;
+		height: 800px;
+	}
+	.cell img {
+	}
+  </style>
+</head>
+
+<body>
+
+  <h1>Puzzles</h1>
+
+  <center>Match all elements form the right frame to create a whole object in the right frame.</center><br>
+
+  <div id='theGane'>
+    <div id='picture' class="cell"></div>
+    <div id='elements' class="cell"></div>
+  </div>
+
+  <script>
+
+    function acceptElement(element) {
+      return true;
+    }
+
+    function dropElement(event, ui) {
+      $(this).apend(ui.draggable);
+    }
+
+    $(init);
+
+    function init() {
+      //for (let i = 2; i < 10; i++) {
+        $("#elements").append("<img src='images/a1.jpg' id='" + 1 + "' style='left:" + 20 + "px'></div>");
+      //}
+      $('div.cell').droppable({
+        activeClass: "active",
+        hoverClass: "hover",
+        accept: acceptElement,
+        drop: dropElement
+      });
+      $('#picture').draggable({
+        appendTo: "theGame",
+        helper: "clone",
+        start: function() {
+          $(this).hide();
+        },
+        stop: function() {
+          $(this).show();
+        }
+      });
+    }
+
+  </script>
+
+</body>
+
+</html>
