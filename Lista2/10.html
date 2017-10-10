@@ -19,30 +19,26 @@
         return parseInt(document.getElementById('obrazek').src.slice(-6).slice(0,2));
       }
     }
-      function getNextImg() {
-        let id = getId();
-        if (id<10){
-          document.getElementById('obrazek').src='images/a'+eval(id+1)+'.jpg';
-          document.getElementById('obrazek').alt=eval(id+1);
-        } else {
-          document.getElementById('obrazek').src='images/a1.jpg';
-          document.getElementById('obrazek').alt='1';
-        }
-      };
-      function getPreviousImg() {
-        let id = getId();
-        if (id>1){
-          document.getElementById('obrazek').src='images/a'+eval(id-1)+'.jpg';
-          document.getElementById('obrazek').alt=eval(id-1);
-        } else {
-          document.getElementById('obrazek').src='images/a10.jpg';
-          document.getElementById('obrazek').alt='10';
-        }
 
-      }
+        
+		function getImg(number) {
+			let id = getId();
+			let image = document.getElementById('obrazek');
+			if ((id>1 && number === 1) || (id<10 && number === -1)) {				
+				document.getElementById('obrazek').src='images/a'+eval(id+number)+'.jpg';
+				document.getElementById('obrazek').alt=eval(id+number);
+			} else if (id === 1 && number === -1) {
+				document.getElementById('obrazek').src='images/a10.jpg';
+				document.getElementById('obrazek').alt='10';				
+			} else if (id === 10 && number === 1) {
+				document.getElementById('obrazek').src='images/a1.jpg';
+				document.getElementById('obrazek').alt='1';				
+			}
+		}
+      
     </script>
-    <button onclick="getPreviousImg()">Poprzedni</button>
-    <button onclick="getNextImg()">Następny</button>
+    <button onclick="getImg(-1)">Poprzedni</button>
+    <button onclick="getImg(1)">Następny</button>
     <br>
     <img src="images/a1.jpg" alt="Obrazek" id="obrazek">
   </body>
