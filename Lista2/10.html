@@ -1,45 +1,47 @@
 <!DOCTYPE html>
 <html lang="pl">
-  <head>
-    <meta charset="utf-8">
-    <title>Lista 2: Ćwiczenie 10</title>
-    <style media="screen">
-      img {
-        width: 300px;
-      }
-    </style>
-  </head>
-  <body>
-    <script type="text/javascript">
+
+<head>
+  <meta charset="utf-8">
+  <title>Lista 2: Ćwiczenie 10</title>
+  <style media="screen">
+    img {
+      width: 300px;
+    }
+  </style>
+</head>
+
+<body>
+  <script type="text/javascript">
     function getId() {
-      let temp = parseInt(document.getElementById('obrazek').src.slice(-5).slice(0,1));
-      if (temp !== 0){
+      let temp = parseInt(document.getElementById('obrazek').src.slice(-5).slice(0, 1));
+      if (temp !== 0) {
         return temp;
       } else {
-        return parseInt(document.getElementById('obrazek').src.slice(-6).slice(0,2));
+        return parseInt(document.getElementById('obrazek').src.slice(-6).slice(0, 2));
       }
     }
 
-        
-		function getImg(number) {
-			let id = getId();
-			let image = document.getElementById('obrazek');
-			if ((id>1 && number === 1) || (id<10 && number === -1)) {				
-				document.getElementById('obrazek').src='images/a'+eval(id+number)+'.jpg';
-				document.getElementById('obrazek').alt=eval(id+number);
-			} else if (id === 1 && number === -1) {
-				document.getElementById('obrazek').src='images/a10.jpg';
-				document.getElementById('obrazek').alt='10';				
-			} else if (id === 10 && number === 1) {
-				document.getElementById('obrazek').src='images/a1.jpg';
-				document.getElementById('obrazek').alt='1';				
-			}
-		}
-      
-    </script>
-    <button onclick="getImg(-1)">Poprzedni</button>
-    <button onclick="getImg(1)">Następny</button>
-    <br>
-    <img src="images/a1.jpg" alt="Obrazek" id="obrazek">
-  </body>
+
+    function getImg(number) {
+      let id = getId();
+      let image = document.getElementById('obrazek');
+      if ((id > 1 && number === -1) || (id < 10 && number === 1)) {
+        image.src = 'images/a' + eval(id + number) + '.jpg';
+        image.alt = eval(id + number);
+      } else if (id === 1 && number === -1) {
+        image.src = 'images/a10.jpg';
+        image.alt = '10';
+      } else if (id === 10 && number === 1) {
+        image.src = 'images/a1.jpg';
+        image.alt = '1';
+      }
+    }
+  </script>
+  <button onclick="getImg(-1)">Poprzedni</button>
+  <button onclick="getImg(1)">Następny</button>
+  <br>
+  <img src="images/a1.jpg" alt="Obrazek" id="obrazek">
+</body>
+
 </html>
