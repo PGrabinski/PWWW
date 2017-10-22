@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+<style>
+    div:nth-child(odd) {background:#eee}
+    span {margin:5px}
+</style>
+</head>
+
+<body>
+<script>
+  var a1=[1,2,3,2,1,2,3,4,5,8];    
+
+  var a2=['Pies','Kaczka','Kura'];    
+
+  var s='';
+
+  for(i=0;i<a1.length;i++)
+    s+="<span>"+a1[i]+"</span>";
+
+  for(i=0;i<a2.length;i++)
+    s+="<div>"+a2[i]+"</div>";
+  document.body.innerHTML+=s;
+</script>
+
+</body>
+</html>

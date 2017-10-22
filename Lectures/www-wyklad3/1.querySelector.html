@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8">
+<style>
+.a {width:400px;height:400px;border:1px solid red;margin:10px;border-radius:200px}    
+</style>
+</head>
+<html>
+<body>
+
+<div>
+    <div class="a b"></div>
+</div>
+<div class="a b c"></div>
+<div class="a c"></div>
+
+
+<script>
+    var i, p=document.querySelectorAll('.b');
+    for(i=0;i<p.length;i++)
+        p[i].style.background='red';
+</script>
+</body>
+</html>

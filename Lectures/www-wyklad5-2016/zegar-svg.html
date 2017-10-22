@@ -1,0 +1,103 @@
+<html>
+<head>
+	<meta charset='utf-8'/>
+	<style>
+	#zegar {
+				margin:auto;
+				display:block;
+				border:1px solid grey;
+			}
+			
+	#godzina{
+				text-align:center;
+				margin:10px;
+				font-size:20px;
+			}
+	</style>
+</head>
+
+<body>
+
+	<svg id="zegar" height="600" width="600">		
+		
+		<circle cx=300 cy=300 r=286  stroke-width=7 stroke=black fill=none />
+
+		<line id=godz stroke='black' stroke-width='20'/>
+		<line id=min  stroke='black' stroke-width='20'/>
+		<line id=sek  stroke='grey'  stroke-width='6'/>
+		
+	</svg>
+
+	<div id="godzina"></div>
+
+</body>
+
+
+
+<script> 
+
+	ruchWskazowek();
+	setInterval(ruchWskazowek,1000); // aktualizuj położenie co 1 sek
+
+		function kreska(r1,r2,alpha,width)
+		{
+			alpha*=Math.PI*2;
+			var s="<line x1="+(300+r1*Math.sin(alpha)) 
+			          +" y1="+(300-r1*Math.cos(alpha))
+			          +" x2="+(300+r2*Math.sin(alpha)) 
+			          +" y2="+(300-r2*Math.cos(alpha)) 
+			          +" stroke=black stroke-width="+width
+			          +" />";
+			document.getElementById("zegar").innerHTML+=s;
+		}
+
+		// Znaczki godzinowe
+		for(i=0;i<12;i++)
+			kreska(260,288,i/12,10);
+
+		// Znaczki minutowe
+		for(i=0;i<60;i++)
+			kreska(276,288,i/60,3);
+		 
+
+		function przesun(id,r1,r2,alpha)
+		{
+			alpha*=Math.PI*2;
+			var linia=document.getElementById(id);
+			linia.setAttribute('x1',300+r1*Math.sin(alpha));
+			linia.setAttribute('y1',300-r1*Math.cos(alpha));
+			linia.setAttribute('x2',300+r2*Math.sin(alpha)); 
+			linia.setAttribute('y2',300-r2*Math.cos(alpha)); 
+		}
+		
+	
+
+	// Ustawia wskazówki bieżącą godzinę
+	function ruchWskazowek()
+	{    
+				
+		var data=new Date();
+		var sekundy=data.getSeconds();
+		var minuty=data.getMinutes();
+		var godziny=data.getHours();
+		
+		//Wskazówka godzinowa
+		przesun('godz',-40,200,godziny/12+minuty/60/12);
+		
+		//Wskazówka minutowa
+		przesun('min',-50,260,minuty/60+sekundy/60/60);
+		
+		//Wskazówka sekundowa
+		przesun('sek',-30*2,140*2,sekundy/60);
+
+		// Wyświetl datę i czas pod zegarem 
+		var c=document.getElementById("godzina").innerHTML=data;
+		
+	}
+
+
+</script>
+
+</html>
+
+

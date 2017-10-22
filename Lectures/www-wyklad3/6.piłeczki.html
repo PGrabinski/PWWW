@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+<style>
+    #ramka {height:500px;width:500px; border:1px solid grey;margin:auto;position:relative}
+    #mieszaj {pointer:hand}
+    b {display:block;height:10px;width:10px;border-radius:5px;background:red;position:absolute}
+    h1,div {text-align:center;margin:10px}
+</style>
+</head>
+<body>
+
+</body>
+
+<h1>Piłeczki</h1>
+<div id='ramka'>
+    <b></b>
+    <b></b>
+    <b></b>
+    <b></b>
+    <b></b>
+    <b></b>
+    <b></b>
+    <b></b>
+    <b></b>
+    <b></b>
+    <b></b>
+</div>
+
+<div>
+    <button onclick="run=false"> Stop </button>
+    <button onclick="run=true;start()"> Start </button>
+</div>
+
+
+<script>
+        var b=document.getElementsByTagName('B');
+        var run=false;
+        var i;
+        for(i=0;i<b.length;i++)
+        {
+            b[i].x=Math.random()*490;
+            b[i].y=Math.random()*490;
+
+            b[i].vx=Math.random()*20-10;
+            b[i].vy=Math.random()*20-10;
+            
+            b[i].style.left=b[i].x+"px";
+            b[i].style.top =b[i].y+"px";
+        }
+
+    function start()
+    {
+        var i;
+        for(i=0;i<b.length;i++)
+        {
+            b[i].x+=b[i].vx;
+            b[i].y+=b[i].vy;
+            
+            if(b[i].x>490 || b[i].x<0)  b[i].vx*=-1;
+            if(b[i].y>490 || b[i].y<0)  b[i].vy*=-1;
+            
+            b[i].style.left=b[i].x+"px";
+            b[i].style.top =b[i].y+"px";
+        }
+        
+        if(run)
+            setTimeout(start,20);
+        
+    }
+</script>
+
+</html>

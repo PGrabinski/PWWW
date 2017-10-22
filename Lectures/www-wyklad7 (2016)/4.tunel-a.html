@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='UTF-8'>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <style>
+        div {width:100%;padding-bottom:100%;position:absolute;border:1px solid grey;box-sizing:border-box}
+        div >div {width:90%;padding-bottom:90%;left:5%;top:5%;transform:rotateZ(10deg)}
+    </style>
+</head>
+
+<body>
+<button>Klik</button>
+<div class='a' style='position:relative'></div>
+
+</body>
+
+<script>
+
+$('button').click( 
+    function (){
+        $('.a').append('<div class=a></div>').removeClass('a');
+    }
+);
+
+</script> 
+
+</html>
+

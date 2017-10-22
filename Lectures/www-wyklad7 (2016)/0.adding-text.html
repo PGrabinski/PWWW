@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='UTF-8'>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <style>
+        .a,.c,.d ,.e {width:90px;height:20px;border:1px solid grey;box-sizing:border-box;text-align:center;margin:3px}
+        .a {background:red}
+        .b {;border:3px solid black;width:100px}
+        .c {background:orange}
+        .d {background:yellow}
+        .e {background:pink}
+    </style>
+</head>
+
+<body>
+
+<div class='b'> Kliknij</div>
+
+</body>
+
+<script>
+var i=0;
+
+$('.b').click( 
+
+    function  ()
+    {    
+         $('.b').after("<div class='c'>after "+i+"</div>");
+         $('.b').before("<div class='a'>before "+i+"</div>");
+         $('.b').append("<div class='d'>append "+i+"</div>");
+         $('.b').prepend("<div class='e'>prepend "+i+"</div>");
+         i++;
+    }
+
+);
+
+</script> 
+
+</html>
+

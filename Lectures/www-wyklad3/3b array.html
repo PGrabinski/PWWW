@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+<style>
+    div:nth-child(odd) {background:#eee}
+</style>
+</head>
+<body>
+<script>
+  var a=[];    
+  var i;
+  var s='';
+  for(i=0;i<100;i++)
+  {
+    a[i]=[];           // a jest tablicą tablic
+    for(j=0;j<100;j++) 
+        a[i][j]=i*j;   // tablica tablic wygląda jak tebela dwuwymiarowa 
+  }   
+   
+  document.body.innerHTML+=a[4][5];
+</script>
+
+</body>
+</html>

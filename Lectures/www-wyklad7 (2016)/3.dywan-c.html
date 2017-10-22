@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='UTF-8'>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <style>
+        div {width:100%;padding-bottom:100%;position:absolute;}
+        div >div {width:50%;padding-bottom:50%;}
+        div:nth-child(2) {right:0}
+        div:nth-child(3) {bottom:0}
+        div:nth-child(4) {right:0;bottom:0}
+        .a {background:red}
+    </style>
+</head>
+
+<body>
+
+<H1>Dywanik</H1>
+<button>Kliknij</button>
+
+<div class='a' style='position:relative'></div>
+
+</body>
+
+<script>
+    
+$('button').click(
+  function(){
+      $('.a').append('<div class=a></div><div class=a></div><div class=a></div>').removeClass('a');
+  }
+);
+</script> 
+
+</html>
+

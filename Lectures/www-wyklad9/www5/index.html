@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Chat</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    </head>
+
+<body>
+
+    <h2>Pogawędka</h2>
+
+    <form method='post' class='ajax'>
+        <input id='nick' name='nick' placeholder="Podaj imię"><br>
+        <input id='text' name='text' style="width:400px" >
+        <input type=submit name='co'>
+    </form>
+
+    <ul id='chat'></ul>
+
+</body>
+
+<script>
+
+var last=0;    
+
+$("#nick").focus();
+
+setInterval(function(){ 
+        $.ajax(
+        {
+            url : "text.php?last="+last,
+            success:function(data)
+            {
+                     $("#chat").prepend(data);
+            }
+        });
+        } ,1000 );
+
+
+
+$("form.ajax").submit(
+    function(e)
+    {
+        if($('#nick').val()=="") 
+            return false;
+        var postData = $(this).serializeArray();
+        $.ajax(
+        {
+            url : "text.php?last="+last,
+            type: "POST",
+            data : postData,
+            success:function(data, textStatus, jqXHR) 
+            {
+                     $("#chat").prepend(data);
+                     $("#text").val('');
+            },
+            error: function(jqXHR, textStatus, errorThrown) 
+            {
+                $("#chat").html("Błąd połączenia");
+            }
+        });
+        return false;
+    }
+);
+
+</script>
+</html>

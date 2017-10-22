@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+<style>
+    td {height:50px;width:50px;vertical-align:middle;text-align:center;font-size:40px;
+        }
+    table{margin:auto}
+    div{text-align:center;margin:10px;font-size:40px}
+    b { border:1px solid grey;border-radius:10px;background:#def;display:block}
+    #mieszaj {pointer:hand}
+</style>
+</head>
+<body>
+
+</body>
+<div>Gra w 15</div>
+<table>
+<tr><td></td><td></td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td><td></td></tr>
+</table>
+<div id='wynik' ></div>
+<div id='mieszaj' onclick="mieszaj()">Mieszaj</div>
+<script>
+        var td=document.getElementsByTagName('TD');
+        
+        for(i=0;i<16;i++)  
+        {
+            if(i<15) td[i].innerHTML="<b>"+(i+1)+"</b>";
+            td[i].nr=i;
+            td[i].onclick=f;
+            //td[i].onmouseover=f;
+        }
+        
+        function ruch(k,j)
+        {
+            td[j].innerHTML=td[k].innerHTML;
+            td[k].innerHTML='';
+            if(sprawdz())
+                document.getElementById('wynik').innerHTML='Wygrana!!!';
+        }
+        
+        function f()
+        {
+            //this.style.color='red';
+            var k=this.nr;
+            if(k>3&&td[k-4].innerHTML=='')
+                ruch(k,k-4);
+            else
+            if(k<12&&td[k+4].innerHTML=='')
+                ruch(k,k+4);
+            else
+            if(k%4>0&&td[k-1].innerHTML=='')
+                ruch(k,k-1);
+            else
+            if(k%4<3>0&&td[k+1].innerHTML=='')
+                ruch(k,k+1);
+        }
+        
+        function sprawdz()
+        {
+            var i;
+            for(i=0;i<15;i++)
+                if(td[i].innerHTML!="<b>"+(i+1)+"</b>")
+                    return false;
+            return true;
+        }
+        
+        function mieszaj()
+        {
+           document.getElementById('wynik').innerHTML='';
+           var i;
+           for(i=0;i<1000;i++)
+           {
+               
+               var j=Math.floor(Math.random()*16);
+               var k=Math.floor(Math.random()*16);
+               var tmp=td[j].innerHTML;
+               td[j].innerHTML=td[k].innerHTML;
+               td[k].innerHTML=tmp;
+               if(j==k)
+                   i--;
+           }
+        }
+
+</script>
+
+</html>

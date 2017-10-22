@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>jQuery UI Droppable - Shopping Cart Demo</title>
+  <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+  <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+  <script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+  <style>
+    #box,
+    #box1 {
+      width: 800px;
+      margin: 10px auto;
+      clear: both
+    }
+
+    #box div {
+      width: 100px;
+      height: 100px;
+      float: left;
+      box-sizing: border-box;
+      border: 1px solid green;
+      background: #eee
+    }
+
+    #box div.c {
+      backgroud: white
+    }
+
+    #box div.active {
+      background: #ddf
+    }
+
+    #box div.hover {
+      background: #eff
+    }
+
+    img {
+      border-radius: 45px;
+      margin: 5px
+    }
+  </style>
+  <script>
+    var a = '<img class=a src="img/pa.jpg" width=90 height=90>';
+    var b = '<img class=b src="img/pb.jpg" width=90 height=90>';
+    var last = true;
+
+    function drop(event, ui) {
+
+      last = ui.draggable.hasClass("a"); // Zapisz czy pionek klasy a
+      //         $("p").html(last);
+
+      var id1 = Number(this.id);
+      var id2 = Number(ui.draggable.parent().attr("id"));
+      $("#" + (id1 + id2) / 2).empty();
+
+      ui.draggable.appendTo(this);
+      $(".active").removeClass("active");
+    }
+
+    function accept(pionek) {
+      var id1 = this.id; // id pola docelowego
+      console.log(id1);
+      var id2 = $(pionek).parent().attr("id"); // id pola źródłowego
+      console.log(id2);
+      var x1 = id1 % 8;
+      var y1 = (id1 - x1) / 8;
+      var x2 = id2 % 8;
+      var y2 = (id2 - x2) / 8;
+      var dx = x1 - x2;
+      var dy = y1 - y2;
+      if (dx * dx + dy * dy == 8) {
+        var id3 = (Number(id1) + Number(id2)) / 2;
+      }
+
+      return $(this).html() == '' && last != $(pionek).hasClass('a') &&
+        (dx * dx + dy * dy == 2 && (dy > 0 == $(pionek).hasClass('a')) ||
+          dx * dx + dy * dy == 8 && $("#" + id3 + " img").hasClass('b') == $(pionek).hasClass('a') &&
+          $("#" + id3).html() != ''
+        );
+    }
+
+    $(function() {
+      $("img").draggable({
+        appendTo: "body",
+        helper: "clone",
+        start: function() {
+          $(this).hide();
+        },
+        stop: function() {
+          $(this).show();
+        }
+      });
+
+      $("#box div").droppable({
+        activeClass: "active",
+        hoverClass: "hover",
+        accept: accept,
+        drop: drop
+      });
+    });
+  </script>
+</head>
+
+<body>
+  <div id="box"></div>
+
+  <p style=clear:both;text-align:center></p>
+  <script>
+    for (var i = 0; i < 64; i++)
+      $("#box").append("<div id='" + i + "'></div>");
+    for (var i = 0; i < 64; i++) {
+      var x = i % 8;
+      var y = (i - x) / 8;
+      if ((x + y) % 2) {
+        if (y < 3)
+          $("#" + i).html(a);
+        if (y >= 5)
+          $("#" + i).html(b);
+
+      } else $("#" + i).css("background", '#bbb');
+    }
+  </script>
+</body>
+
+</html>

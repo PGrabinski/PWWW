@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+<style>
+    div:nth-child(odd) {background:#eee}
+    div.opis {border: 1px solid grey; margin: 10px;padding:5px}
+</style>
+</head>
+<body>
+
+</body>
+
+<script>
+  var a={};                           // pusty obiekt 
+  a.imie='jan';                       // dodanie własności do istniejącego obiektu  
+  a.nazwisko='kowalski';
+  a.adres={ ulica:'Plac Maksa Borna',    
+            numer:'9',
+            miasto:'Wrocław',
+            kod:'53-230'
+          };                           // własność adres sama jest obiektem  
+  a.adres.panstwo='Polska';            // szczegóły adresu można w dowolnej chwili zmienić 
+  a.pesel='111111111';                 // dodanie własności do istniejącego obiektu  
+
+  var b={imie:'Jan',                   // taki sam obiekt można zbudować w jednym ruchu 
+         nazwisko:'Kowalski',          // ta notacja nazywa się JSON - Java Script Object Notation 
+         pesel:'111111111',
+         dzieci:['Marek','Zofia'],
+         adres:{
+                ulica:'Plac Maksa Borna',    
+                numer:'9',
+                miasto:'Wrocław',
+                kod:'53-230',
+                panstwo:'Polska'
+                },
+         };
+    
+    var ludzie=[a,b];                  // tablica złożona z dwóch obiektów
+    
+    document.body.innerHTML+=a.adres.panstwo+' '+b.adres.panstwo+"<br>";
+    document.body.innerHTML+=a.imie+' '+b.imie;
+    document.body.innerHTML+=show(a);
+    document.body.innerHTML+=show(a.adres);
+    document.body.innerHTML+=show(b);
+    document.body.innerHTML+=show(b.adres);
+    
+    function show(o)   // ta funkcja generuje opis obiektu  
+    {
+        var t='';
+        for(i in o)
+          t+="<div>"+i+": "+o[i]+"</div>";
+        return "<div class='opis'>"+t+"</div>";
+    };
+  
+</script>
+
+</html>

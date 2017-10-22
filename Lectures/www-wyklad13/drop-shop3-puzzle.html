@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>jQuery UI Droppable - Shopping Cart Demo</title>
+  <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+  <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+  <script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+  <style>
+  #box {width:800px}
+  .cart { width: 200px; height: 200px; float: left; box-sizing:border-box ;
+      border:1px solid green;background:#eee}
+  .cart.active {background:#ddf}    
+  .cart.hover {background:#eff}    
+  .cart img {width:200px}
+  </style>
+  <script>
+  $(function() {
+    $( ".cart li,.cart img" ).draggable({
+      appendTo: "body",
+      helper: "clone",
+      start: function () {$(this).hide();},
+      stop: function () {$(this).show();}
+    });
+    
+    $( ".cart" ).droppable({
+      activeClass: "active",
+      hoverClass: "hover",
+      accept: ":not(.sui-sortable-helper)",
+      drop: function( event, ui ) {
+        ui.draggable.appendTo( this );
+      }
+    });
+  });
+  </script>
+</head>
+<body>
+ 
+<div id="box">
+    <div class="cart ">
+            <img src="img/a.jpg" width=200 height=200>
+    </div>
+    <div class="cart ">
+                <img src="img/c.jpg" width=200 height=200>
+
+    </div>
+    <div class="cart "></div>
+    <div class="cart "></div>
+    <div class="cart "></div>
+    <div class="cart "></div>
+    <div class="cart "></div>
+    <div class="cart "></div>
+    <div class="cart "></div>
+    <div class="cart "></div>
+    <div class="cart "></div>
+    <div class="cart "></div>
+    <div class="cart "></div>
+    <div class="cart "></div>
+    <div class="cart "></div>
+    <div class="cart "></div>
+</div>
+ 
+</body>
+</html>

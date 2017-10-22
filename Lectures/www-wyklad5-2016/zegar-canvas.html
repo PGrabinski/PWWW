@@ -1,0 +1,110 @@
+<html>
+<head>
+	<meta charset='utf-8'/>
+	<style>
+	#zegar {
+				margin:auto;
+				display:block;
+				border:1px solid grey;
+			}
+			
+	#godzina{
+				text-align:center;
+				margin:10px;
+				font-size:20px;
+			}
+	</style>
+</head>
+
+<body>
+
+	<canvas id="zegar" height="600" width="600">		
+		Your browser does not support the canvas tag.   
+	</canvas>
+
+	<div id="godzina"></div>
+
+</body>
+
+
+
+<script> 
+	rysujZegar();                  // narysuj zegar
+	setInterval(rysujZegar,1000);  // rysuj zegar co sekundę (1000ms)
+
+	
+	// funkcja do rysowania kresek 
+	function kreska(ctx,r1,r2,alpha)
+	{
+		alpha*=Math.PI*2;
+		ctx.beginPath();
+		ctx.moveTo(300+r1*Math.sin(alpha),300-r1*Math.cos(alpha));
+		ctx.lineTo(300+r2*Math.sin(alpha),300-r2*Math.cos(alpha));
+		ctx.stroke();
+	}
+
+	// Rysuje zegar wskazujący bieżącą godzinę
+	function rysujZegar()
+	{    
+		var c=document.getElementById("zegar");
+		var ctx=c.getContext("2d");
+		
+		// Zamalowanie tła na biało (wymazuje poprzedni rysunek zegara)
+		ctx.fillStyle="white";
+		ctx.fillRect(0,0,600,600);
+		
+
+		// tarcza zegara		
+		ctx.strokeStyle="black"; // kolor linii  
+		ctx.lineWidth=6; 		 // szerokość linii
+		
+		ctx.beginPath();
+		// rysujemy okrąg
+		ctx.arc(300, // x środka okręgu
+				300, // y środka okręgu
+				286, // promień łuku 
+				0,        // kąt początkowy
+				2*Math.PI // kąt końcowy 
+				);
+		ctx.stroke();     // narysuj        
+		
+
+		// Znaczki godzinowe o szerokości 10
+		ctx.lineWidth=10;
+		for(i=0;i<12;i++)
+			kreska(ctx,260,288,i/12);
+
+		// Znaczki minutowe o szerokości 3
+		ctx.lineWidth=3;
+		for(i=0;i<60;i++)
+			kreska(ctx,276,288,i/60);
+
+		
+		var data=new Date();           // Pobieramy datę systemową
+		var sekundy=data.getSeconds(); // Wyciągamy z niej sekundy
+		var minuty=data.getMinutes();  // minuty
+		var godziny=data.getHours();   // i godziny
+		
+		//Wskazówka godzinowa
+		ctx.lineWidth=20;
+		kreska(ctx,-40,200, godziny/12+minuty/60/12);
+		
+		//Wskazówka minutowa
+		kreska(ctx,-50,260, minuty/60+sekundy/60/60);
+		
+		//Wskazówka sekundowa
+		ctx.lineWidth=5;
+		ctx.strokeStyle="grey";
+		kreska(ctx,-60,280, sekundy/60);
+
+		// Wyświetl datę i czas pod zegarem 
+		document.getElementById("godzina").innerHTML=data;
+		
+	}
+
+
+</script>
+
+</html>
+
+

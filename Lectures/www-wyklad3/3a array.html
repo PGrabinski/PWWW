@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+<style>
+    div:nth-child(odd) {background:#eee}
+</style>
+</head>
+<body>
+<script>
+  var a=[];    
+  var i;
+  var s='';
+  for(i=0;i<1000;i++)
+    a[ i]=i;
+  for(i=0;i<1000;i++)
+    s+="<div>"+a[i]+"</div>";
+  document.body.innerHTML+=s;
+</script>
+
+</body>
+</html>

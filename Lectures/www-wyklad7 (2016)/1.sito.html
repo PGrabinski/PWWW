@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='UTF-8'>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <style>
+    body {font-size:24px}
+     div {width:40px;margin:5px ;float:left;border:1px solid grey;text-align:center;} 
+     .notprime {color:red}
+    </style>
+</head>
+
+<body>
+
+<H1>Sito Erastotenesa</H1>
+
+<nav></nav>
+
+Kliknięcie na liczbę ukrywa jej wielokrotności:
+
+<section></section>
+
+</body>
+
+<script>
+for(var i=1;i<=400;i++)
+   $('section').append("<div>"+i+"</div>");
+
+    $('div').click(
+        function ()
+        {
+            $('div:nth-child('+$(this).html()+'n)').hide();
+            $(this).show();
+        }
+     );
+
+   $('div:nth-child(1)').hide();
+
+</script> 
+
+</html>
+

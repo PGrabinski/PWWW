@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="utf-8">
+    <style>
+         body {font-family:Arial}
+    </style>
+    <script>
+        function f(x){document.body.style.background=x;}
+        function d(){document.body.innerHTML+=document.body.innerHTML}
+        function c(el){document.body.style.background=el.style.color;}
+    </script>
+</head>
+<body>
+    <h1>Tytuł</h1>
+    <button onclick="c(this)" style='color:red'>red</button>
+    <button onclick="c(this)" style='color:pink'>pink</button>
+    <button onclick="c(this)" style='color:magenta'>magenta</button>
+    <button onclick="c(this)" style='color:blue'>blue</button>
+    <button onclick="c(this)" style='color:green'>green</button>
+    <button onclick="c(this)" style='color:yellow'>yellow</button>
+    <button onclick="c(this)" style='color:white'>white</button>
+    
+    <button onclick="d()">Duplikuj</button>
+    
+    <button onclick="this.innerHTML+='.'">itd</button>
+    <br>
+    <button onclick="document.body.innerHTML=''">Wyczyść</button>
+</body>
+</body>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='UTF-8'>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <style>
+        .b {border:3px solid black;width:100px;position:absolute}
+        .c {border:3px solid red;width:100px;position:absolute}
+    </style>
+</head>
+<body>
+<div style="min-height:1000px">
+<div class='b'> Kliknij</div>
+<div class='c'> Kliknij</div>
+</div>
+</body>
+
+<script>
+var i=0;
+var x=100,y=100;
+var cx=100,cy=100;
+
+
+function f()
+{
+     
+     x=(50*x+cx)/51;
+     y=(50*y+cy)/51;
+     $('.b').css({left:x+"px",top:y+"px"});
+     $('.c').css({left:cx+"px",top:cy+"px"});
+     setTimeout(f,10);
+}
+
+ f();
+
+
+$('body').mousemove(  
+
+    function  (event)
+    {
+        cx=event.pageX-50;
+        cy=event.pageY-15;
+    }
+
+);
+
+$('.b').click(
+
+    function ()
+    { 
+        $(this).css({color:"red"}).animate({transform:"rotateZ(90deg)",width:"500px"})
+    }
+
+);
+</script> 
+
+</html>
+
