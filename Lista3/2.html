@@ -5,84 +5,96 @@
   <meta charset="utf-8">
   <title>Lista 3: Ćwiczenie 2</title>
   <style>
-    * {
-      background-color: #f5f5f5;
-      color: black;
-    }
-    .menu1 a {
-      font-family: Arial;
-      display: block;
-      background: coral;
-      padding: 4px 20px;
-      margin: 2px;
-      text-decoration: none;
-      font-size: 20px;
-      color: black;
+    table {
+      border-collapse: collapse
     }
 
-    .menu1 li:hover>a {
-      background: plum;
-    }
-
-    .menu1>li {
-      display: table-cell;
-      padding: 10px;
-      border: none;
-      margin: auto;
-    }
-
-    .menu1>li>a {
-      background: palegoldenrod;
-      color: white;
-      width: 200px;
-    }
-
-    .menu1>li:hover>a {
-      background: gold;
-    }
-
-    .menu1 ul {
-      list-style-type: none;
-      padding: 0;
-    }
-
-    .menu1 li ul {
-      position: absolute;
+    td {
+      width: 50px;
+      height: 50px;
       border: 1px solid grey;
-      background: violet;
-      display: none;
     }
 
-    .menu1 li:hover ul {
-      display: block
+    tr:nth-child(odd) td:nth-child(odd) {
+      background: #ddd
+    }
+
+    tr:nth-child(even) td:nth-child(even) {
+      background: #ddd
     }
   </style>
 </head>
 
 <body>
-  <ul class="menu1">
-    <li><a href=#>Media</a>
-      <ul>
-        <li><a href=#>Zdjęcia</a></li>
-        <li><a href=#>Filmy</a></li>
-        <!-- <li><a href=#>Chopin</a></li> -->
-      </ul>
-    </li>
-    <li><a href=#>Doświadczenie</a>
-      <ul>
-        <li><a href=#>Naukowe</a></li>
-        <li><a href=#>IT</a></li>
-      </ul>
-    </li>
-    <li><a href=#>Umiejętności</a>
-      <ul>
-        <li><a href=#>IT</a></li>
-        <li><a href=#>Naukowe</a></li>
-        <li><a href=#>Miękkie</a></li>
-        <li><a href=#>Języki</a></li>
-      </ul>
-    </li>
-  </ul>
+  <button type="button" onclick="fillWithNumbers()">Fill with numbers</button>
+  <button type="button" onclick="addCell()">Add a cell</button>
+  <button type="button" onclick="emptyCells()">Empty cells</button>
+  <button type="button" onclick="emptyRows()">Empty rows</button>
+  <table>
+    <tr>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+  </table>
+  <script type="text/javascript">
+    function fillWithNumbers() {
+      let cells = document.getElementsByTagName('td');
+      let counter = 0;
+      for (let cell of cells) {
+        cell.innerHTML = counter;
+        counter++;
+      }
+    }
+    function addCell(){
+      let rows = document.getElementsByTagName('tr');
+      for (let row of rows) {
+        row.innerHTML+='<td></td>';
+      }
+    }
+    function emptyCells(){
+      let cells = document.getElementsByTagName('td');
+      for (let cell of cells) {
+        cell.innerHTML = '';
+      }
+    }
+    function emptyRows(){
+      let rows = document.getElementsByTagName('tr');
+      for (let row of rows) {
+        row.innerHTML = '';
+      }
+    }
+  </script>
 </body>
 
 </html>

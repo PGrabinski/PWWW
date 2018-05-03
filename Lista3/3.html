@@ -10,55 +10,56 @@
       color: black;
     }
 
-    #sec2,
-    #sec3 {
-      display: none;
+    p {
+      height: 20px;
+      border: 1px solid red;
     }
 
-    #sec1 {
-      display: block;
-    }
-
-    #but1 {
-      font-weight: bold;
-    }
-
-    #but2,
-    #but3 {
-      font-weight: normal;
+    p:nth-child(4n) {
+      background-color: black;
     }
   </style>
 </head>
 
 <body>
-  <script type="text/javascript">
-    function selectSection(id) {
-      for (let i = 1; i <= 3; i++) {
-        document.getElementById('sec' + i).style.display = 'none';
-        document.getElementById('but' + i).style.fontWeight = 'normal';
-      }
-      document.getElementById('sec'+id).style.display = 'block';
-      document.getElementById('but'+id).style.fontWeight = 'bold';
-    }
-  </script>
-  <button onclick="selectSection(1)" id="but1">Sekcja 1</button>
-  <button onclick="selectSection(2)" id="but2">Sekcja 2</button>
-  <button onclick="selectSection(3)" id="but3">Sekcja 3</button>
-
-  <section id="sec1">
-    <h1>Sekcja 1</h1>
-    <img src="images/a1.jpg" alt="Obrazek 1">
-  </section>
-
-  <section id="sec2">
-    <h1>Sekcja 2</h1>
-    <img src="images/a2.jpg" alt="Obrazek 2">
-  </section>
-
-  <section id="sec3">
-    <h1>Sekcja 3</h1>
-    <img src="images/a3.jpg" alt="Obrazek 3">
-  </section>
+  <button>OK</button>
+  <button onclick="whiteBackground()">White background</button>
+  <button onclick="pinkBackground()">Pink background</button>
+  <p></p>
+  <p></p>
+  <p></p>
+  <p></p>
+  <p></p>
+  <p></p>
+  <p></p>
+  <p></p>
+  <p></p>
+  <p></p>
+  <p></p>
+  <p></p>
+  <p></p>
+  <p></p>
+  <p></p>
+  <p></p>
+  <p></p>
+  <p></p>
+  <p></p>
+  <p></p>
 </body>
+<script type="text/javascript">
+  function whiteBackground() {
+    let paragraphs = document.getElementsByTagName('p');
+    for (let paragraph of paragraphs) {
+      paragraph.style.backgroundColor = 'white';
+    }
+  }
+
+  function pinkBackground() {
+    let paragraphs = document.getElementsByTagName('p');
+    for (let i=0;i<paragraphs.length;i+=3) {
+      paragraphs[i].style.backgroundColor = 'pink';
+    }
+  }
+</script>
 
 </html>

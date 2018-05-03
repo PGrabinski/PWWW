@@ -1,123 +1,144 @@
+<!DOCTYPE html>
 <html>
 
 <head>
-	<meta charset='utf-8' />
-	<title>Lista 5: Ćwiczenie 4</title>
-	<style>
-		body {
-			background-color: #f5f5f5;
-			color: black;
-		}
+  <meta charset="utf-8">
+  <title>Lista 5: Ćwiczenie 5</title>
+  <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+  <style>
+    * {
+      background-color: #f5f5f5;
+      color: black;
+      position: relative;
+    }
 
-		#zegar {
-			margin: auto;
-			display: block;
-			border: 1px solid grey;
-		}
-
-		#godzina {
-			text-align: center;
-			margin: 10px;
-			font-size: 20px;
-		}
-	</style>
+    #svgpro {
+      fill: none;
+      stroke-width: 2;
+    }
+  </style>
 </head>
 
 <body>
-
-	<canvas id="zegar" height="600" width="600">
-		Your browser does not support the canvas tag.
-	</canvas>
-
-	<div id="godzina"></div>
-
+  <svg viewBox="-34 -12 68 33" width="500" height="500">
+     <defs>
+        <clipPath id="interlace">
+           <path d="M -11,-11 h 22 v 22 h -22 z M 11,-1.5 a 10.5,10.5 0 0,0 0,21 v -3 a 7.5,7.5 0 1,1 0,-15 M -11,1.5 a 7.5,7.5 0 1,1 0,15 v 3 a 10.5,10.5 0 0,0 0,-21 z" clip-rule="evenodd"/>
+        </clipPath>
+        <clipPath id="interlace_Firefox">
+           <path d="M 0,0 l -12,12 h 12 z"/>
+        </clipPath>
+        <g id="ring">
+           <circle r="9"  clip-path="url(#interlace)"/>
+           <circle r="9"  clip-path="url(#interlace_Firefox)"/>
+           <path d="M 0,-9 a 9,9 0 0,1 9,9" transform="rotate(45)"/>
+        </g>
+     </defs>
+       <g id="svgpro">
+        <g id="ring1" stroke="#0085c7" transform="translate(-22,0)">
+           <use xlink:href="#ring"/>
+           <path d="M 0,-9 a 9,9 0 0,0 0,18"/>
+        </g>
+        <use id="ring2" xlink:href="#ring" stroke="black"/>
+        <g id="ring3" stroke="#df0024" transform="translate(22,0)">
+           <use xlink:href="#ring"/>
+           <path d="M 0,-9 a 9,9 0 0,1 0,18"/>
+        </g>
+        <use id="ring4" xlink:href="#ring" stroke="#f4c300" transform="translate(-11,9) rotate(180)"/>
+        <use id="ring5" xlink:href="#ring" stroke="#009f3d" transform="translate(11,9) rotate(180)"/>
+     </g>
+  </svg>
+  <script type="text/javascript">
+    $(document).ready(() => {
+      $('#ring1').on('click', () => {
+        $('#ring1').fadeOut(2000, () => {
+          $('#ring1').fadeIn(2000);
+        })
+      });
+      $('#ring2').on('click', () => {
+        $('#ring1').fadeOut(2000, () => {
+          $('#ring1').fadeIn(2000);
+        });
+        $('#ring5').fadeOut(2000, () => {
+          $('#ring5').fadeIn(2000);
+        });
+        $('#ring3').fadeOut(2000, () => {
+          $('#ring3').fadeIn(2000);
+        });
+        $('#ring4').fadeOut(2000, () => {
+          $('#ring4').fadeIn(2000);
+        });
+      });
+      $('#ring4').on('click', () => {
+        let box = $('#ring4');
+        box.animate({
+          foo: 50
+        },
+        {
+          step: function(foo){
+            $(this).attr('x',foo);
+          },
+          duration: 2000
+        });
+        setTimeout(() => {
+          box.animate({
+            foo: 0
+          },
+          {
+            step: function(foo){
+              $(this).attr('x',foo);
+            },
+            duration: 2000
+          });
+        }, 2000);
+      });
+      $('#ring5').on('click', () => {
+        let box = $('#ring5');
+        box.animate({
+          foo: -40
+        },
+        {
+          step: function(foo){
+            $(this).attr('x',foo);
+          },
+          duration: 2000
+        });
+        setTimeout(() => {
+          box.animate({
+            foo: 0
+          },
+          {
+            step: function(foo){
+              $(this).attr('x',foo);
+            },
+            duration: 2000
+          });
+        }, 2000);
+      });
+    });
+    $('#ring3').on('click', () => {
+      let box5 = $('#ring5');
+      box5.animate({
+        foox: 22
+      },
+      {
+        step: function(foox){
+          $(this).attr('x',foox);
+        },
+        duration: 2000
+      });
+      let box4 = $('#ring4');
+      box4.animate({
+        foox: -22
+      },
+      {
+        step: function(foox){
+          $(this).attr('x',foox);
+        },
+        duration: 2000
+      });
+  });
+  </script>
 </body>
-
-
-
-<script>
-	let clock = {
-		'x': Math.random() * 450 + 50,
-		'y': Math.random() * 450 + 50,
-		'vx': Math.random() * 2 -1,
-		'vy': Math.random() * 2 -1
-	}
-	rysujZegar(); // narysuj zegar
-	setInterval(moveClock, 10); // rysuj zegar co sekundę (1000ms)
-
-	function moveClock() {
-		clock.x+=clock.vx;
-		clock.y+=clock.vy;
-		if (clock.x > 564 || clock.x < 36) clock.vx *= -1;
-		if (clock.y > 564 || clock.y < 36) clock.vy *= -1;
-		rysujZegar();
-	}
-	// funkcja do rysowania kresek
-	function kreska(ctx, r1, r2, alpha) {
-		alpha *= Math.PI * 2;
-		ctx.beginPath();
-		ctx.moveTo(clock.x + r1 * Math.sin(alpha), clock.y - r1 * Math.cos(alpha));
-		ctx.lineTo(clock.x + r2 * Math.sin(alpha), clock.y - r2 * Math.cos(alpha));
-		ctx.stroke();
-	}
-
-	// Rysuje zegar wskazujący bieżącą godzinę
-	function rysujZegar() {
-		var c = document.getElementById("zegar");
-		var ctx = c.getContext("2d");
-
-		// Zamalowanie tła na biało (wymazuje poprzedni rysunek zegara)
-		ctx.fillStyle = "white";
-		ctx.fillRect(0, 0, 600, 600);
-
-
-		// tarcza zegara
-		ctx.strokeStyle = "black"; // kolor linii
-		ctx.lineWidth = 3; // szerokość linii
-
-		ctx.beginPath();
-		// rysujemy okrąg
-		ctx.arc(clock.x, // x środka okręgu
-			clock.y, // y środka okręgu
-			36, // promień łuku
-			0, // kąt początkowy
-			2 * Math.PI // kąt końcowy
-		);
-		ctx.stroke(); // narysuj
-
-
-		// Znaczki godzinowe o szerokości 10
-		ctx.lineWidth = 4;
-		for (i = 0; i < 12; i++)
-			kreska(ctx, 28, 38, i / 12);
-
-		// Znaczki minutowe o szerokości 3
-		ctx.lineWidth = 0.5;
-		for (i = 0; i < 60; i++)
-			kreska(ctx, 26, 38, i / 60);
-
-
-		var data = new Date(); // Pobieramy datę systemową
-		var sekundy = data.getSeconds(); // Wyciągamy z niej sekundy
-		var minuty = data.getMinutes(); // minuty
-		var godziny = data.getHours(); // i godziny
-
-		//Wskazówka godzinowa
-		ctx.lineWidth = 5;
-		kreska(ctx, -5, 30, godziny / 12 + minuty / 60 / 12);
-
-		//Wskazówka minutowa
-		kreska(ctx, -10, 40, minuty / 60 + sekundy / 60 / 60);
-
-		//Wskazówka sekundowa
-		ctx.lineWidth = 1;
-		ctx.strokeStyle = "grey";
-		kreska(ctx, -15, 45, sekundy / 60);
-
-		// Wyświetl datę i czas pod zegarem
-		document.getElementById("godzina").innerHTML = data;
-
-	}
-</script>
 
 </html>

@@ -4,136 +4,147 @@
 <head>
   <meta charset="utf-8">
   <title>Lista 5: Ćwiczenie 4</title>
+  <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
   <style>
-    body {
+    * {
       background-color: #f5f5f5;
       color: black;
     }
 
-    #ramka {
-      height: 700px;
+    .ramka {
       width: 700px;
-      border: 2px solid plum;
-      margin: auto;
-      position: relative
+      height: 500px;
+      border: 1px solid coral;
     }
 
-    #mieszaj {
-      pointer: hand
-    }
-
-    b {
+    .b {
       display: block;
-      height: 50px;
-      width: 50px;
+      height: 20px;
+      width: 20px;
       border-radius: 5px;
-      background: none;
+      background: brown;
       position: absolute
     }
 
-    b>img {
-      width: 50px;
-      height: 50px;
-    }
-
-    h1,
-    div {
-      text-align: center;
-      margin: 10px
+    p {
+      font-weight: bold;
+      font-family: Arial;
+      color: red;
     }
   </style>
 </head>
 
 <body>
+  <button id="newGame">New game</button>
+  <p id="gameInfo" style="display: inline"></p>
+  <div class="ramka" id="ramka">
 
+  </div>
+  <script type="text/javascript">
+    $(document).ready(() => {
+      let head = {
+        x: 200,
+        y: 200,
+        dx: 0,
+        dy: 0
+      };
+      let counter = 0;
+      let snakeLength = 3;
+      let skipRemove = 0;
+      let historyPositions = [];
+      let collision = false;
+      let moved = false;
+      let snakeInterval;
+      setGame();
+      snakeInterval = setSnakeInterval();
+
+
+      //Keybord control
+      $(document).keydown((event) => {
+        var a = event.keyCode;
+        if (a == 37) {
+          head.dx = -20;
+          head.dy = 0;
+        }
+        if (a == 38) {
+          head.dx = 0;
+          head.dy = -20;
+        }
+        if (a == 39) {
+          head.dx = 20;
+          head.dy = 0;
+        }
+        if (a == 40) {
+          head.dx = 0;
+          head.dy = 20;
+        }
+      });
+
+      $('#newGame').on('click', () => {
+        setGame();
+        snakeInterval = setSnakeInterval();
+      });
+
+      function setGame() {
+        clearInterval(snakeInterval);
+        $('#ramka').empty();
+        counter = 0;
+        head.x = 200;
+        head.y = 200;
+        head.dx = 0;
+        head.dy = 0;
+        snakeLength = 3;
+        skipRemove = false;
+        $('#gameInfo').text('');
+        historyPositions = [];
+        historyPositions.push({
+          x: head.x,
+          y: head.y
+        });
+        collision = false;
+        moved = false;
+        $('#ramka').append('<div class="b" style="left:' + head.x + 'px;top:' + head.y + 'px"></div>');
+      }
+
+      function setSnakeInterval() {
+        return setInterval(() => {
+          head.x += head.dx;
+          head.y += head.dy;
+          if (head.x !== 200 || head.y !== 200) moved = true;
+          if (moved) {
+            for (let point of historyPositions) {
+              if (point.x === head.x && point.y === head.y) {
+                collision = true;
+                console.log('Collision!');
+              }
+            }
+            if (historyPositions.length > snakeLength) {
+              console.log(snakeLength);
+              historyPositions = historyPositions.slice(1, snakeLength);
+            }
+            historyPositions.push({
+              x: head.x,
+              y: head.y
+            });
+            console.log(historyPositions);
+            if (head.x < 10 || head.x > 690 || head.y < 30 || head.y > 500 || collision) {
+              clearInterval(snakeInterval);
+              $('#gameInfo').text('GAME OVER!');
+            }
+
+            $('#ramka').append('<div class="b" style="left:' + head.x + 'px;top:' + head.y + 'px"></div>');
+            if (counter > snakeLength && !skipRemove) $('#ramka').find('.b:first').remove();
+            counter++;
+            if (skipRemove) skipRemove = false;
+            if (snakeLength !== Math.max(3, Math.floor(counter / 5))) {
+              skipRemove = true;
+              snakeLength = Math.max(3, Math.floor(counter / 5));
+            }
+          }
+        }, 500);
+      }
+    })
+  </script>
 </body>
-
-<h1>Trampki</h1>
-<div id='ramka'>
-  <b><img src="trump.png" alt="Trump face"></b>
-  <b><img src="trump.png" alt="Trump face"></b>
-  <b><img src="trump.png" alt="Trump face"></b>
-  <b><img src="trump.png" alt="Trump face"></b>
-  <b><img src="trump.png" alt="Trump face"></b>
-  <b><img src="trump.png" alt="Trump face"></b>
-  <b><img src="trump.png" alt="Trump face"></b>
-  <b><img src="trump.png" alt="Trump face"></b>
-  <b><img src="trump.png" alt="Trump face"></b>
-  <b><img src="trump.png" alt="Trump face"></b>
-</div>
-
-<div>
-  <button onclick="run=false"> Stop </button>
-  <button onclick="run=true;start()"> Start </button>
-  <button onclick="rotate=!rotate"> Rotation </button>
-</div>
-
-
-<script>
-  var b = document.getElementsByTagName('B');
-  var run = false;
-  var i;
-  let angle = 3 //deg
-  let rotate = false;
-  for (i = 0; i < b.length; i++) {
-    b[i].x = Math.random() * 650;
-    b[i].y = Math.random() * 650;
-
-    b[i].vx = Math.random() * 20 - 10;
-    b[i].vy = Math.random() * 20 - 10;
-
-    b[i].style.left = b[i].x + "px";
-    b[i].style.top = b[i].y + "px";
-    b[i].rot = Math.atan(b[i].vx / b[i].vy) * 180 / Math.PI;
-    b[i].childNodes[0].style.webkitTransform = 'rotate(' + (-1)*b[i].rot + 'deg)';
-    b[i].iter = 0;
-  }
-
-  function start() {
-    var i;
-    for (i = 0; i < b.length; i++) {
-      b[i].x += b[i].vx;
-      b[i].y += b[i].vy;
-
-
-      if (b[i].x > 650 || b[i].x < 0) {
-        //Transforms back to regular position
-        b[i].childNodes[0].style.webkitTransform = 'rotate(' + eval(b[i].rot+b[i].iter*angle)+'deg)';
-        //Changes the velocity
-        b[i].vx *= -1;
-        //Calulates angle and rotates
-        b[i].rot = Math.atan(b[i].vx / b[i].vy) * 180 / Math.PI;
-        b[i].childNodes[0].style.webkitTransform = 'rotate('+ eval((-1)*+ b[i].rot -b[i].iter*angle)+ 'deg)';
-        //Resets the counter
-        b[i].iter = 0;
-      }
-      if (b[i].y > 650 || b[i].y < 0) {
-        //Transforms back to regular position
-        b[i].childNodes[0].style.webkitTransform = 'rotate(' + eval(b[i].rot+ b[i].iter*angle)+  'deg)';
-        //Changes the velocity
-        b[i].vy *= -1;
-        //Calulates angle
-        b[i].rot = Math.atan(b[i].vx / b[i].vy) * 180 / Math.PI;
-        b[i].childNodes[0].style.webkitTransform = 'rotate(' + eval((-1)*b[i].rot-b[i].iter*angle)+ 'deg)';
-        //Resets the counter
-        b[i].iter = 0;
-      }
-      b[i].childNodes[0].style.webkitTransform = 'rotate(' +eval(b[i].rot+b[i].iter*angle)+  'deg)';
-      b[i].childNodes[0].style.webkitTransform = 'rotate(' + eval((-1)*b[i].rot-b[i].iter*angle)+ 'deg)';
-      b[i].style.left = b[i].x + "px";
-      b[i].style.top = b[i].y + "px";
-      if (rotate) {
-        b[i].iter++;
-      } else {
-        b[i].iter=0;
-      }
-      console.log(b[i].iter*angle);
-    }
-
-    if (run)
-      setTimeout(start, 20);
-
-  }
-</script>
 
 </html>

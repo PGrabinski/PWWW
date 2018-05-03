@@ -2,80 +2,209 @@
 <html>
 
 <head>
-  <meta charset="utf-8">
+  <meta charset="UTF-8">
   <title>Lista 6: Ćwiczenie 3</title>
-  <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+  <script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+  <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+  <link href="../node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
   <style>
     * {
-      background-color: #f5f5f5;
-      color: black;
-    }
-
-    div {
-      position: absolute;
-    }
-
-    #ramka {
-      position: absolute;
-      left: 50px;
-      top: 50px;
-      width: 800px;
-      height: 400px;
-      border: 1px solid coral;
-    }
-
-    h1 {
       text-align: center;
-      font-weight: bold;
       font-family: Arial;
     }
 
+    img {
+      min-width: 100px;
+    }
+
+    .element {
+      display: inline-block;
+      background-repeat: no-repeat;
+      position: absolute;
+    }
+
+    .elReciver {
+      display: inline-block;
+      padding: 0;
+    }
+
+    .cell {
+      height: 400px;
+      width: 400px;
+    }
+
+    #pictureBody,
+    table {
+      padding: 2px;
+      margin: 0;
+    }
+
+    #picture {
+      padding: 2px;
+    }
   </style>
 </head>
 
 <body>
-  <div id="ramka">
+  <div class="container">
+    <header class="row">
+      <hr>
+      <div class="col-md-4">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/c/c3/AA78_by_Zdzislaw_Beksinski_1978.jpg" style="max-height: 250px;" id="tip" class="img-responsive img-thumbnail">
+      </div>
+      <div class="col-md-8">
+        <br>
+        <label class="form-control" for="dividersNumber">Number of puzzles:</label>
+        <input class="form-control" type="number" placeholder="10" value="10" name="dividersNumber" id="dividersNumber" min="1" max="20">
+        <label class="form-control" for="newPicture">Address of image:</label>
+        <input class="form-control" type="text" placeholder="Image address" name="newPicture" id="newPicture">
+        <button class="btn btn-primary" onclick="reset()" name="newPuzzles" id="newPuzzles">Reset puzzles</button>
+      </div>
+    </header>
+    <hr>
+    <div class="row" id='theGame'>
+      <div id='picture' class="well cell col-md-6">
+        <table class="table table-bordered">
+          <tbody id="pictureBody">
+          </tbody>
+        </table>
+      </div>
+      <div id='elements' class="well cell col-md-6"></div>
+    </div>
   </div>
-  <script type="text/javascript">
-    $(document).ready(() => {
-      let score = 0;
-      let colors =['coral','violet','palegoldenrod','plum','lightgreen'];
-      let timers = [];
-      for (let i=0; i<5; i++) {
-        addBlock(i);
-      }
-      setTimeout(()=>{
-        $('#ramka').remove();
-        $('body').append('<h1>Your score: '+score+'</h1>');
-      },20000);
 
-      function disappearAfter5(id){
-        timers[id] = setTimeout(() => {
-          $('#'+id+'').remove();
-          addBlock(id);
-        }, 5000);
-      }
+  <script>
+    let match = [];
+    let dividers = 3;
+    const bgSize = 400;
+    let cellSize = bgSize * 1.05 + dividers * 5;
+    let theImage = 'https://upload.wikimedia.org/wikipedia/commons/c/c3/AA78_by_Zdzislaw_Beksinski_1978.jpg';
 
-      function addBlock(i) {
-      $('#ramka').append(
-        '<div id="'+i+'" style="background-color:'
-        +colors[Math.floor(Math.random()*5)]
-        +'; left:'+Math.floor(Math.random()*750)
-        +'px; top:'+Math.floor(Math.random()*350)
-        +'px; width:'+Math.floor(Math.random()*20+30)
-        +'px; height:'+Math.floor(Math.random()*20+30)
-        +'px;"> </div>');
-        $('#'+i).on('click',() => {
-          score++;
-          clearTimeout(timers[i]);
-          $('#'+i).remove();
-          addBlock(i);
-        });
-        disappearAfter5(i);
+    function reset() {
+      console.log($('#newPicture')[0].value);
+      dividers = parseInt($('#dividersNumber')[0].value);
+      if ($('#newPicture')[0].value) {
+        theImage = $('#newPicture')[0].value
+      }
+      init();
+    }
+
+    function isComplete() {
+      let complete = true;
+      for (let i = 0; i < dividers; i++) {
+        for (let j = 0; j < dividers; j++) {
+          if (match[i][j] === false) {
+            complete = false;
+          }
+        }
+      }
+      if (complete) {
+        setTimeout(() => {
+          $('#picture').empty();
+          $('#picture').css({
+            'background-image': 'url(' + theImage + ')',
+            'background-repeat': 'no-repeat',
+            'background-size': cellSize + 'px ' + cellSize + 'px'
+          });
+          $('#elements').empty();
+          $('#elements').append('<h1 class="alert alert-success">It is complete!</h1>');
+        }, 1000);
       }
     }
-    );
+
+    function acceptElement(element) {
+      let lastThisNumberId = parseInt($(this)[0].id.length);
+      let thisId = parseInt($(this)[0].id.slice(1, lastThisNumberId));
+      let lastParentNumberId = parseInt($(this).parent()[0].id.length);
+      let parentId = parseInt($(this).parent()[0].id.slice(1, lastParentNumberId));
+      let lastDropNumberId = parseInt($(element)[0].id.length - 2);
+      let dropId = parseInt($(element)[0].id.slice(2, lastDropNumberId));
+      if (dropId == thisId * parentId) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+
+    function dropElement(event, ui) {
+      let el = $(ui.draggable);
+      $(this).css({
+        'background-image': 'url(' + theImage + ')',
+        'background-size': bgSize + 'px ' + bgSize + 'px',
+        'background-position': el[0].style.backgroundPosition
+      })
+      let thisId = parseInt($(this)[0].id.slice(1, 2));
+      let parrentId = parseInt($(this).parent()[0].id.slice(1, 2));
+      match[parrentId - 1][thisId - 1] = true;
+      isComplete();
+      $(ui.draggable).remove();
+    }
+
+    $(init);
+
+    function init() {
+      cellSize = bgSize + dividers * 5;
+      $('#pictureBody').empty();
+      $('#elements').empty();
+      let elSize = bgSize / dividers;
+      for (let j = 0; j < dividers; j++) {
+        match[j] = [];
+        let newRow = '<tr id="r' + (j + 1) + '">';
+        for (let i = 0; i < dividers; i++) {
+          // $("#elements").append('<div id="el' + (i + 1) * (j + 1) + 'r' + (j + 1) +
+          //   '" class="element" style="background-position: ' + (-elSize * i) + 'px ' +
+          //   (-elSize * j) + 'px; left:' + ((elSize * 0.95 + 1) * i +
+          //     0.01 *
+          //     bgSize) + 'px; top: ' +
+          //   ((elSize * 0.95 + 1) * j + 0.01 * bgSize) + 'px;" ></div>');
+          $("#elements").append('<div id="el' + (i + 1) * (j + 1) + 'r' + (j + 1) +
+            '" class="element" style="background-position: ' + (-elSize * i) + 'px ' +
+            (-elSize * j) + 'px; left:' + (Math.random() * (cellSize - elSize)) + 'px; top: ' +
+            (Math.random() * (cellSize - elSize)) + 'px;" ></div>');
+          match[j][i] = false;
+          newRow += '<td class="elReciver" id="c' + (i + 1) + '"></td>';
+        }
+        newRow += '</tr>';
+        $('#pictureBody').append(newRow);
+      }
+      $('.elReciver').css({
+        height: bgSize / dividers * 0.95,
+        width: bgSize / dividers * 0.95,
+        padding: 0
+        // border: '1px solid black'
+      });
+      $('#tip').attr('src', theImage);
+      $('.cell').css({
+        height: cellSize,
+        width: cellSize,
+      });
+      $('.element').css({
+        height: bgSize / dividers * 0.95,
+        width: bgSize / dividers * 0.95,
+        'background-image': 'url(' + theImage + ')',
+        'background-size': bgSize + 'px ' + bgSize + 'px'
+      });
+
+      $('.elReciver').droppable({
+        activeClass: "active",
+        hoverClass: "hover",
+        accept: acceptElement,
+        drop: dropElement
+      });
+      $('.element').draggable({
+        appendTo: "#theGame",
+        helper: "clone",
+        start: function() {
+          $(this).hide();
+        },
+        stop: function() {
+          $(this).show();
+        }
+      });
+    }
   </script>
+
 </body>
 
 </html>

@@ -1,0 +1,20 @@
+
+  .mogra {
+    font-family: 'Mogra', cursive;
+  }
+
+  .navbar-light {
+    background-color: lightgreen;
+  }
+
+  .nav-link {
+    color: green;
+  }
+
+  .nav-link:hover {
+    color: lightgreen;
+  }
+
+  .img-carousel {
+    width: 700px;
+  }

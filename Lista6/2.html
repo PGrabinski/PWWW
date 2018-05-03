@@ -5,212 +5,105 @@
   <meta charset="utf-8">
   <title>Lista 6: Ćwiczenie 2</title>
   <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+  <script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+  <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
   <style>
-    * {
-      background-color: #f5f5f5;
-      color: black;
+    .gameField {
+      height: 50px;
+      width: 50px;
+      border: 1px solid grey;
+      text-align: center;
+      font-size: 35px;
+    }
+
+    .gameField:hover {
+      background: #ddd
+    }
+
+    .emptyField {
+      background-color: white;
+      border: none;
     }
 
     table {
-      position: absolute;
-      left: 100px;
-      border: 1px solid plum;
-      padding: 5px;
-      background-color: lightgreen;
+      margin: auto;
+      border-collapse: collapse;
     }
 
-    tr {
-      background-color: lightgreen;
-    }
-
-    td,
-    th {
-      border: 1px solid plum;
-      border-radius: 2px;
-      padding: 5px 15px;
-      margin: 5px;
-      background: palegoldenrod;
-      font-family: Arial;
-    }
-
-    .highlighted {
-      background-color: coral;
-      font-weight: bold;
+    h1 {
+      text-align: center
     }
   </style>
 </head>
 
 <body>
-
-  <button id="AddEmptyRow">Add empty row</button>
-  <button id="AddEmptyCol">Add empty Column</button>
-  <button id="AddCellLastRow">Add cell to the last row</button>
-  <button id="CoppyLastRow">Coppy last row</button>
-  <button id="RemoveFirstRow">Remove first row</button>
-  <hr>
-  <button id="RemoveLastRow">Remove last row</button>
-  <button id="RemoveFirstCol">Remove first column</button>
-  <button id="RemoveLastCol">Remove last column</button>
-  <button id="ToggleClickRemove">Toggle cell remove by clicking</button>
-  <button id="ToggleStyleMouseover">Toggle cell style on mouseover</button>
-  <hr>
-  <table>
-    <tr>
-      <th>Column 1</th>
-      <th>Column 2</th>
-      <th>Column 3</th>
-    </tr>
-    <tr>
-      <td>A1</td>
-      <td>A2</td>
-      <td>A3</td>
-    </tr>
-    <tr>
-      <td>1</td>
-      <td>2</td>
-      <td>3</td>
-    </tr>
-    <tr>
-      <td>1</td>
-      <td>2</td>
-      <td>3</td>
-    </tr>
-    <tr>
-      <td>1</td>
-      <td>2</td>
-      <td>3</td>
-    </tr>
-    <tr>
-      <td>1</td>
-      <td>2</td>
-      <td>3</td>
-    </tr>
-    <tr>
-      <td>1</td>
-      <td>2</td>
-      <td>3</td>
-    </tr>
-    <tr>
-      <td>1</td>
-      <td>2</td>
-      <td>3</td>
-    </tr>
-    <tr>
-      <td>1</td>
-      <td>2</td>
-      <td>3</td>
-    </tr>
-    <tr>
-      <td>1</td>
-      <td>2</td>
-      <td>3</td>
-    </tr>
-    <tr>
-      <td>1</td>
-      <td>2</td>
-      <td>3</td>
-    </tr>
+  <table id="theGame">
   </table>
-  <script type="text/javascript">
-    $(document).ready(() => {
-      toggleHoverStyling = false;
-      toggleClickCellRemove = false;
+  <h1 id="info">Remaining: 32</h1>
+  <script>
+    let score = 32;
 
-      //By clicking the corresponding button, we add new row
-      $('#AddEmptyRow').on('click', () => {
-        let elFirstRow = $('table').find('tr:first')[0].childNodes;
-        let numberOfCols = 0;
-        for (let item of elFirstRow) {
-          if (item.localName === 'td' || item.localName === 'th') numberOfCols++;
+    function accept(field) {  if (field[0].innerText === 'O') {
+        if (($('#' + this.id).parent().attr('id') === $('#' + field[0].id).parent().attr('id') && Math.abs(field[0].id - this.id) === 2) || Math.abs(field[0].id - this.id) === 14) {
+          if (this.innerText === '') {
+            return true;
+          }
         }
-        let newrow = '<tr>';
-        for (let i = 0; i < numberOfCols; i++) {
-          newrow += '<td></td>';
-        }
-        newrow += '</tr>'
-        $('table').append(newrow);
-      })
+      } else {
+        return false;
+      }
+    }
 
-      //By clicking the corresponding button, we add a new column
-      $('#AddEmptyCol').on('click', () => {
-        $('table').find('tr').find('td:last').after('<td></td>');
-        $('table').find('tr').find('th:last').after('<th></th>');
-      });
+    function drop(event, ui) {
+      let sourceId = ui.draggable[0].id;
+      let targetId = this.id;
+      let middleId = (parseInt(sourceId) + parseInt(targetId))/2;
+      $('#'+sourceId).empty();
+      $('#'+middleId).empty();
+      $('#'+targetId)[0].innerText = 'O';
+      score--;
+      $('#info')[0].innerText = 'Remaining: ' + score;
+      $(".active").removeClass("active");
+    }
 
-      //By clicking the corresponding button, we add a cell to the last row
-      $('#AddCellLastRow').on('click', () => {
-        $('table').find('tr:last').append('<td></td>');
-      })
-
-      //By clicking the corresponding button, we append the last row once more
-      $('#CoppyLastRow').on('click', () => {
-        let lastRow = $('table').find('tr:last').clone();
-        $('table').append(lastRow);
-      })
-
-      //By clicking the corresponding button, we delete the first row
-      $('#RemoveFirstRow').on('click', () => {
-        $('table').find('tr')[1].remove();
-      })
-
-      //By clicking the corresponding button, we delete the last row
-      $('#RemoveLastRow').on('click', () => {
-        $('table').find('tr:last').remove();
-      })
-
-      //By clicking the corresponding button, we delete the first column
-      $('#RemoveFirstCol').on('click', () => {
-        let tableRows = $('table').find('tr').find('td:eq(0)');
-        for(let item of tableRows) {
-          item.remove();
-        }
-        $('table').find('tr').find('th:eq(0)').remove();
-      })
-
-      //By clicking the corresponding button, we delete the last column
-      $('#RemoveLastCol').on('click', () => {
-        let tableRows = $('table').find('tr').find('td:last');
-        for(let item of tableRows) {
-          item.remove();
-        }
-        $('table').find('tr').find('th:last').remove();
-      })
-
-      //By clicking the corresponding button, we enable click cell removal
-      $('#ToggleClickRemove').on('click', () => {
-        toggleClickCellRemove = !toggleClickCellRemove;
-        $('td').on('click', (e) => {
-          $(e.currentTarget).fadeOut();
-        });
-      });
-
-      //By clicking the corresponding button, we enable hover class change of a cell
-      $('#ToggleStyleMouseover').on('click',
-        () => {
-          toggleHoverStyling = !toggleHoverStyling;
-
-          //This is much better approach, but the exercise was explicit about mouseover+mouseout
-          //   $('td').hover((e) => {
-          //     if (toggleHoverStyling) {
-          //       $(e.currentTarget).toggleClass('highlighted');
-          //     }
-          // });
-
-          $('td').on('mouseover', (e) => {
-            if (toggleHoverStyling) {
-              $(e.currentTarget).addClass('highlighted');
+    function setUp() {
+      let shortRowsNumbers = [1, 2, 6, 7];
+      for (let i = 1; i <= 7; i++) {
+        let newRow = '';
+        newRow += '<tr id="row' + i + '">';
+        for (let j = 1; j <= 7; j++) {
+          if (shortRowsNumbers.indexOf(i) !== -1 && shortRowsNumbers.indexOf(j) !== -1) {
+            newRow += '<td id="' + ((i-1) *7 + j) + '" class="emptyField"></td>';
+          } else {
+            if (i == 4 && j == 4) {
+              newRow += '<td id="' + ((i-1) *7 + j) + '" class="gameField"> </td>';
+            } else {
+              newRow += '<td id="' + ((i-1) *7 + j) + '" class="gameField">O</td>';
             }
-          });
-          $('td').on('mouseout', (e) => {
-            if (toggleHoverStyling) {
-              $(e.currentTarget).removeClass('highlighted');
-            }
-          })
+          }
+        }
+        newRow += '</tr>';
+        $('#theGame').append(newRow);
+      }
 
+    }
 
-        });
-    })
+    $(() => {
+      setUp();
+      $('td.gameField').draggable({
+        appendTo: "table",
+        helper: "clone",
+      });
+      $('td.gameField').droppable({
+        activeClass: "active",
+        hoverClass: "hover",
+        accept: accept,
+        drop: drop
+      });
+    });
+
   </script>
+
 </body>
 
 </html>

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Lista 4: Ćwiczenie 3</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+  <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+</head>
+
+<body>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-6 mx-auto text-center">
+        <div class="card card-body mt-3 p-5">
+          <p class="card-titles">Gra 3 sekundy</p>
+          <button class="btn btn-success mx-auto my-2 d-block" onclick="play()">
+          3 sekundy
+        </button>
+          <div id="play" class="card-text mx-auto my-2">Zegar tyka! <span class="bg-danger" style="border-radius: 5px; width: 10px; height:10px; display: inline-block"></span></div>
+          <p class="card-text" id="meanError">Twój średni błąd to: </p>
+          <p class="card-text" id="history">
+
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript">
+    let gameState = 0;
+    let cyclesCounter = 0;
+    let intervals = [];
+    let lastRead;
+    $(() => {
+      $('#play').hide();
+    });
+
+    function play() {
+      let currentRead = new Date();
+      if (gameState == 1) {
+        intervals.push((currentRead - lastRead));
+        lastRead = currentRead;
+        $('#history').append(Math.floor(intervals[cyclesCounter] / 10) / 100 + '<br>')
+        cyclesCounter++;
+        let sum = 0;
+        for (item of intervals) {
+          sum += (3000 - item) / cyclesCounter ;
+        }
+        sum = Math.floor( sum / 10) / 100;
+        $('#meanError').text("Twój średni błąd to: " + sum);
+      }
+      if (gameState == 0) {
+        gameState = 1;
+        lastRead = new Date();
+        $('#play').show();
+      }
+      if (cyclesCounter == 10) {
+        gameState = 0;
+        cyclesCounter = 0;
+        $('#play').hide();
+        $('#history').empty();
+        $('#meanError').text("Twój średni błąd to: ");
+        intervals = [];
+      }
+
+    }
+  </script>
+</body>
+
+</html>

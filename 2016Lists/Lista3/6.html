@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="pl">
+
+<head>
+  <meta charset="utf-8">
+  <title>Lista 3: Ćwiczenie 6</title>
+  <style>
+    * {
+      background-color: #f5f5f5;
+      color: black;
+    }
+  </style>
+</head>
+
+<body>
+  <canvas id="olimp" height="600" width="600">
+    Your browser does not support the canvas tag.
+  </canvas>
+
+  <script type="text/javascript">
+    var c = document.getElementById("olimp");
+    var ctx = c.getContext("2d");
+    ctx.fillStyle = "#f5f5f5";
+    ctx.fillRect(0, 0, 600, 600);
+    ctx.beginPath();
+    // #009f3d green
+    // #0085c7 blue
+    // #df0024 red
+    // #f4c300 yellow
+    ctx.lineWidth = 8;
+    ctx.strokeStyle = "#0085c7";
+    ctx.arc(100, // x środka okręgu
+      100, // y środka okręgu
+      50, // promień łuku
+      Math.PI * 0.47, // kąt początkowy
+      0.35 * Math.PI // kąt końcowy
+    );
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.strokeStyle = "black";
+    ctx.arc(225, // x środka okręgu
+      100, // y środka okręgu
+      50, // promień łuku
+      Math.PI * 1.00, // kąt początkowy
+      0.35 * Math.PI // kąt końcowy
+    );
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.strokeStyle = "black";
+    ctx.arc(225, // x środka okręgu
+      100, // y środka okręgu
+      50, // promień łuku
+      0.47 * Math.PI,
+      Math.PI * 0.88,
+    );
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.strokeStyle = "#df0024";
+    ctx.arc(350, // x środka okręgu
+      100, // y środka okręgu
+      50, // promień łuku
+      1.0 * Math.PI,
+      Math.PI * 0.88,
+    );
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.strokeStyle = "#f4c300";
+    ctx.arc(162.5, // x środka okręgu
+      155, // y środka okręgu
+      50, // promień łuku
+      // 1.47 * Math.PI,
+      0.01 *Math.PI,
+      Math.PI * 1.35,
+    );
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.strokeStyle = "#f4c300";
+    ctx.arc(162.5, // x środka okręgu
+      155, // y środka okręgu
+      50, // promień łuku
+      // 1.47 * Math.PI,
+      Math.PI * 1.47,
+      1.89 *Math.PI,
+    );
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.strokeStyle = "#009f3d";
+    ctx.arc(287.5, // x środka okręgu
+      155, // y środka okręgu
+      50, // promień łuku
+      // 1.47 * Math.PI,
+      0.01 *Math.PI,
+      Math.PI * 1.35,
+    );
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.strokeStyle = "#009f3d";
+    ctx.arc(287.5, // x środka okręgu
+      155, // y środka okręgu
+      50, // promień łuku
+      // 1.47 * Math.PI,
+      Math.PI * 1.47,
+      1.89 *Math.PI,
+    );
+    ctx.stroke();
+  </script>
+</body>
+
+</html>

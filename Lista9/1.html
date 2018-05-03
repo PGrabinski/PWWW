@@ -2,104 +2,174 @@
 <html>
 
 <head>
-  <meta charset="UTF-8">
-  <title>Lista 9: Ćwiczenie 1</title>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-  <script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-  <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
-  <style>
-    h1 {
-      text-align: center
-    }
-
-    nav {
-      width: auto;
-      margin: auto
-    }
-
-    #hanoi {
-      height: 500px;
-      width: 900px;
-      margin: auto;
-      border: 1px solid grey;
-    }
-
-    .cell {
-      height: 500px;
-      width: 300px;
-      border: 1px solid green;
-      vertical-align: bottom;
-      display: table-cell
-    }
-
-    .k {
-      background: yellow;
-      border: 1px solid grey;
-      height: 50px;
-      margin: auto;
-      border-radius: 25px
-    }
-
-    * {
-      font-family: Sans;
-    }
-  </style>
+    <meta charset="utf-8">
+    <title>Lista 9: Ćwiczenie 1</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+        crossorigin="anonymous">
 </head>
 
 <body>
-
-  <h1>Hanoi</h1>
-
-  <center>Move the stack to the right cell</center><br>
-
-  <div id='hanoi'>
-    <div id='a' class="cell"></div>
-    <div id='b' class="cell"></div>
-    <div id='c' class="cell"></div>
-  </div>
-
-  <script>
-    var current;
-
-    function acceptElement(element) {
-      let smallest = $(this).children(":first").attr("id");
-      if (smallest === undefined || smallest > element[0].id) {
-        return true;
-      } else {
-        return false;
-      }
-    }
-
-    function dropElement(event, ui) {
-      $(this).prepend(ui.draggable);
-    }
-
-    $(init);
-
-    function init() {
-      for (let i = 2; i < 10; i++) {
-        $("#a").append("<div id='" + i + "' class='k' style='width:" + (i*30) + "px'></div>");
-      }
-      $('div.cell').droppable({
-        activeClass: "active",
-        hoverClass: "hover",
-        accept: acceptElement,
-        drop: dropElement
-      });
-      $('div.k').draggable({
-        appendTo: "#hanoi",
-        helper: "clone",
-        start: function() {
-          $(this).hide();
-        },
-        stop: function() {
-          $(this).show();
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-6 mx-auto">
+                    <canvas id="rys" height="400" width="800" class="border border-info mx-auto">
+                        Your browser does not support the canvas tag.
+                    </canvas>
+                    <br>
+                <div class="border border-primary p-3 d-block mb-5 mx-auto mt-2">
+                    <button class="btn btn-primary btn-block" onclick="setSun()">Sun</button>
+                    <button class="btn btn-primary btn-block" onclick="setStar()">Star</button>
+                    <button class="btn btn-primary btn-block" onclick="setFlower()">Flower</button>
+                    <button class="btn btn-danger btn-block" onclick="clear2()">Clear</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        let currentDraw = "sun";
+        bg();
+        sun(100, 100, 1);
+        star(200, 200, 1);
+        flower(500,200,1); 
+        function setSun(){
+            currentDraw = "sun";
         }
-      });
-    }
 
-  </script>
+        function setStar(){
+            currentDraw = "star";
+        }
 
+        function setFlower(){
+            currentDraw = "flower";
+        }
+
+        // Draw a line
+        function line(ctx, x, y, r1, r2, alpha) {
+            alpha *= Math.PI * 2;
+            ctx.beginPath();
+            ctx.moveTo(x + r1 * Math.sin(alpha), y - r1 * Math.cos(alpha));
+            ctx.lineTo(x + r2 * Math.sin(alpha), y - r2 * Math.cos(alpha));
+            ctx.stroke();
+        }
+
+        function clear(){
+            const drawing = document.getElementById("rys");
+            const ctx = drawing.getContext("2d");
+            // White bg
+            ctx.fillStyle = "white";
+            ctx.fillRect(0, 0, 800, 400);
+        }
+        function clear2(){
+            clear();
+        }
+
+        function bg() {
+            const drawing = document.getElementById("rys");
+            const ctx = drawing.getContext("2d");
+            drawing.addEventListener("mousedown", drawCurrent, false);
+            clear();
+        }
+
+        function circle(ctx,x,y,r,lWidth){
+            ctx.strokeStyle = "black"; // kolor linii  
+            ctx.lineWidth = lWidth; // szerokość linii
+            ctx.beginPath();
+            // rysujemy okrąg
+            ctx.arc(x, // x środka okręgu
+                y, // y środka okręgu
+                r, // promień łuku 
+                0, // kąt początkowy
+                2 * Math.PI // kąt końcowy 
+            );
+            ctx.stroke();
+        }
+
+        function sun(x, y, height) {
+            const drawing = document.getElementById("rys");
+            const ctx = drawing.getContext("2d");
+
+            // properties
+            const radius = 50;
+            const lWidth = 4;
+            const ray = 20;
+
+            // Set line properties		
+            ctx.strokeStyle = "black"; // kolor linii  
+            ctx.lineWidth = Math.floor(lWidth * height); // szerokość linii
+
+            circle(ctx,x,y,radius * height,lWidth * height);
+
+            for (i = 0; i < 18; i++) {
+                line(ctx, x, y, radius * height, (radius + ray) * height, i / 18);
+            }
+        }
+
+        function star(x, y, height) {
+            const drawing = document.getElementById("rys");
+            const ctx = drawing.getContext("2d");
+
+            // properties
+            const a = 50*height;
+            const lWidth = 4;
+            const angle = 5 / 6;
+            const h = a * Math.sqrt(3) / 2;
+
+            // Set line properties		
+            ctx.strokeStyle = "black"; // kolor linii  
+            ctx.lineWidth = Math.floor(lWidth * height); // szerokość linii
+
+            line(ctx, x - a / 2, y + h * 0.35, 0, a, 0.25);
+            line(ctx, x - a / 2, y + h * 0.35, 0, a, 1 / 12);
+            line(ctx, x + a / 2, y + h * 0.35, 0, a, 11 / 12);
+            line(ctx, x - a / 2, y - h * 0.35, 0, a, 0.25);
+            line(ctx, x - a / 2, y - h * 0.35, 0, a, 0.25 + 2 / 12);
+            line(ctx, x + a / 2, y - h * 0.35, 0, a, 1 / 12 + 0.5);
+        }
+
+        function drawCurrent(event) {
+            const drawing = document.getElementById("rys");
+            const ctx = drawing.getContext("2d");
+            let x;
+            let y;
+            if (event.x != undefined && event.y != undefined) {
+                x = event.x;
+                y = event.y;
+            } else // Firefox method to get the position
+            {
+                x = event.clientX + document.body.scrollLeft +
+                    document.documentElement.scrollLeft;
+                y = event.clientY + document.body.scrollTop +
+                    document.documentElement.scrollTop;
+            }
+
+            x -= drawing.offsetLeft;
+            y -= drawing.offsetTop;
+
+            eval(currentDraw)(x, y, 0.5);
+        }
+
+        function flower(x,y,height){
+            const drawing = document.getElementById("rys");
+            const ctx = drawing.getContext("2d");
+
+            // properties
+            const radius = 50;
+            const lWidth = 4;
+            const ray = 20;
+            const secR = 0.6;
+            // Set line properties		
+            ctx.strokeStyle = "black"; // kolor linii  
+            ctx.lineWidth = Math.floor(lWidth * height); // szerokość linii
+
+            circle(ctx,x,y,radius * height,lWidth * height);
+
+            for (i = 0; i < 18; i++) {
+                circle(ctx, x - radius * height * (1+secR)* Math.cos(i/6*2*Math.PI), y- radius * height * (1+secR) *Math.sin(i/6*2*Math.PI), radius * height*secR,lWidth * height*0.5);
+            }
+        }
+
+
+    </script>
 </body>
 
 </html>
