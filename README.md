@@ -20,3 +20,5 @@ Two pieces of which I am especially happy are:
 * [Image puzzles with JQuery.ui](http://pgrabinski.pl/PWWW/Lista6/3.html "Puzzles")
 
 The code is not high quality as the course was rather a kind of a run 'n' gun course showing a load of different technologies with stress mostly on getting results not mantaining them.
+
+2016Lists contains previous year versions of the exercises as I made them in advance and then verified to the current version.
